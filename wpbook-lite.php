@@ -234,9 +234,9 @@ function wpbook_lite_subpanel() {
       echo '</p>'; 
   ?></div> <!-- END Required Options --> 		
   <?php 
-    if( (!empty($wpbookLiteAdminOptions['fb_admin_target')) && 
-	    (!empty($wpbookLiteAdminOptions['fb_secret')) && 
-		(!empty($wpbookLiteAdminOptions['fb_api_key')) &&
+    if( (!empty($wpbookLiteAdminOptions['fb_admin_target']) && 
+	    (!empty($wpbookLiteAdminOptions['fb_secret']) && 
+		(!empty($wpbookLiteAdminOptions['fb_api_key']) &&
 	  ) {
 ?>
   <h3>Grant Permissions</h3>
