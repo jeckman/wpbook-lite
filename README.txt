@@ -1,7 +1,7 @@
 === WPBook Lite ===
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
-Stable tag: 1.0
+Stable tag: 1.1
 Tested up to: 3.3
 Requires at least: 2.9
 
@@ -49,6 +49,9 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+
+= 1.1 =
+* Cleanup - have to check for FB_API_KEY and SECRET before making permissions calls. 
 
 = 1.0 =
 * Fork from WPBook full version
