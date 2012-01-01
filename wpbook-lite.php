@@ -233,7 +233,13 @@ function wpbook_lite_subpanel() {
       with your Facbook login. (More info on <a href="http://socialmediaseo.net/2010/02/20/how-to-find-facebook-id/">finding your Page ID</a>).'; 
       echo '</p>'; 
   ?></div> <!-- END Required Options --> 		
-	<h3>Grant Permissions</h3>
+  <?php 
+    if( (!empty($wpbookLiteAdminOptions['fb_admin_target')) && 
+	    (!empty($wpbookLiteAdminOptions['fb_secret')) && 
+		(!empty($wpbookLiteAdminOptions['fb_api_key')) &&
+	  ) {
+?>
+  <h3>Grant Permissions</h3>
 	<div>
 		<p>You have to grant permissions now, so that the Facebook application you've just created can access
 		your personal profile and post on your behalf.</p>
@@ -291,7 +297,9 @@ function wpbook_lite_subpanel() {
 		<p>If you are going to post to a group, you will need to have a user access token stored (see above), and
 		that user must have permission to post on the group's wall.</p>
 	</div>
-  
+<?php 
+	} // end if for required fields present
+?>  
 	<!-- START Stream Options --> 
 	<h3>Stream/Wall Options</h3>
 	<div>
