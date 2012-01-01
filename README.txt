@@ -1,5 +1,5 @@
 === WPBook Lite ===
-Contributors: johneckman, davelester, BandonRandon
+Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
 Stable tag: 1.0
 Tested up to: 3.3
