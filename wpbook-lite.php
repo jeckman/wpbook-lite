@@ -140,8 +140,7 @@ function wpbook_lite_subpanel() {
     global $current_user;
     get_currentuserinfo(); 
     $wpbookLiteAdminOptions = wpbook_lite_getAdminOptions();
-    if (isset($_POST['fb_api_key']) && isset($_POST['fb_secret']) && isset($_POST['fb_admin_target']) 
-      && (!empty($_POST['fb_api_key']))  && (!empty($_POST['fb_secret'])) && (!empty($_POST['fb_admin_target']))) { 
+    if (isset($_POST['fb_api_key']) && isset($_POST['fb_secret']) && isset($_POST['fb_admin_target']) ) { 
       $fb_api_key = preg_replace("#[^0-9]#", "",$_POST['fb_api_key']);
       $fb_secret = $_POST['fb_secret'];
       $fb_admin_target = preg_replace("#[^0-9]#", "",$_POST['fb_admin_target']);
