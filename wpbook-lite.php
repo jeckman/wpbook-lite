@@ -2,12 +2,12 @@
 /*
 Plugin Name: WPBook Lite
 Plugin URI: http://wpbook.net/
-Date: 2011, December 28th
+Date: 2012, January 9th
 Description: Plugin to cross post Wordpress Blog posts to Facebook. 
 Author: John Eckman
 Author URI: http://johneckman.com
-Version: 1.1
-Stable tag: 1.1
+Version: 1.2
+Stable tag: 1.2
 
 */
   
@@ -96,6 +96,7 @@ function setAdminOptions($wpbook_installation,
 							$wpbook_enable_debug,
 							$wpbook_use_global_gravatar,
 							$wpbook_as_note,
+							$wpbook_as_link,
 							$wpbook_target_group,
 							$wpbook_disable_sslverify) {
   $wpbookLiteAdminOptions = array('wpbook_installation' => $wpbook_installation,
@@ -115,6 +116,7 @@ function setAdminOptions($wpbook_installation,
                               'wpbook_enable_debug' => $wpbook_enable_debug,
                               'wpbook_use_global_gravatar' => $wpbook_use_global_gravatar,
                               'wpbook_as_note' => $wpbook_as_note,
+							  'wpbook_as_link' => $wpbook_as_link,
                               'wpbook_target_group' => $wpbook_target_group,
                               'wpbook_disable_sslverify' => $wpbook_disable_sslverify, 
                               );
@@ -155,8 +157,16 @@ function wpbook_lite_subpanel() {
       $imported_comments_email = $_POST['imported_comments_email'];  
       $infinite_session_key = $_POST['infinite_session_key']; 
       $wpbook_enable_debug = $_POST['wpbook_enable_debug'];
-      $wpbook_as_note = $_POST['wpbook_as_note'];
-      $wpbook_target_group = $_POST['wpbook_target_group'];
+	  $wpbook_as_note = 'post'; // default to post type of POST unless otherwise set
+			if($_POST['post_as']=='note')
+				$wpbook_as_note = 'note';
+			if($_POST['post_as']=='link')
+				$wpbook_as_note = 'link';      
+	  $wpbook_as_link = 'post';
+		if($_POST['page_post_as'] == 'link')
+			$wpbook_as_link = 'link';
+				
+	  $wpbook_target_group = $_POST['wpbook_target_group'];
       $wpbook_disable_sslverify = $_POST['wpbook_disable_sslverify'];
       $wpbook_use_global_gravatar = $_POST['wpbook_use_global_gravatar'];
       setAdminOptions(1, $fb_api_key, $fb_secret,$fb_admin_target,$fb_page_target,
@@ -165,7 +175,7 @@ function wpbook_lite_subpanel() {
                     $import_comments,$approve_imported_comments,$num_days_import,
                     $imported_comments_email,$infinite_session_key,
                     $wpbook_enable_debug,
-                    $wpbook_use_global_gravatar,$wpbook_as_note,
+                    $wpbook_use_global_gravatar,$wpbook_as_note,$wpbook_as_link,
                     $wpbook_target_group,$wpbook_disable_sslverify);
       $flash = "Your settings have been saved. ";
     } elseif (($wpbookLiteAdminOptions['fb_api_key'] != "") && ($wpbookLiteAdminOptions['fb_secret'] != "") && ($wpbookLiteAdminOptions['fb_admin_target'] != "")){
@@ -182,7 +192,7 @@ function wpbook_lite_subpanel() {
       if ($wpbookLiteAdminOptions['wpbook_installation'] != 1) {  
         setAdminOptions(1,null,null,null,null,false,
                         false,false,false,false,false,7,"facebook@openparenthesis.org",
-						null,false,false,false,null,false);
+						null,false,false,false,null,null,false);
       }
       if ($flash != '') echo '<div id="message"class="updated fade">'
         . '<p>' . $flash . '</p></div>'; 
@@ -252,10 +262,13 @@ function wpbook_lite_subpanel() {
 		?>
 		<p><strong>Note:</strong> If you already have a stored access_token, you should not need to generate a new one, but you can if need be - it won't hurt anything. 
 		This stored access_token is required EVEN IF YOU DO NOT PLAN TO POST TO YOUR PERSONAL PROFILE WALL</p>
-		<h4>Permissions for pages</h4>
-		<p>This section will cover permissions for posting to pages.</p>
+		
 <?php		  
 	if((!empty($wpbookLiteAdminOptions['fb_page_target'])) && ($wpbookLiteAdminOptions['stream_publish_pages'] == "true")) {
+	?>
+	<h4>Permissions for pages</h4>
+		<p>This section will cover permissions for posting to pages.</p>
+	<?php 
     echo "<p>You've indicated you wish to publish to this page: ". $wpbookLiteAdminOptions['fb_page_target'] ."</p>";
     echo "<!-- start hiding for session warnings";
 	$api_key = $wpbookLiteAdminOptions['fb_api_key'];	
@@ -314,11 +327,8 @@ function wpbook_lite_subpanel() {
           echo("checked");
         }
         echo ' id="set_1"> Publish new posts to <a href="http://www.facebook.com/profile.php?id=' . $wpbookLiteAdminOptions['fb_admin_target'] .'" target="_new">YOUR Facebook Wall</a></p> ';
-        echo '<p class="wpbook_hidden wpbook_option_set_1 sub_options"><input type="checkbox" name="wpbook_as_note" ';
-        if($wpbookLiteAdminOptions['wpbook_as_note']) 
-          echo 'checked';
-        echo ' > Publish as Notes (rather than excerpts - applies only to individual profiles)</p>';
-        
+               
+				
         echo '<p><input type="checkbox" name="stream_publish_pages" value="true" ';
         if( htmlentities($wpbookLiteAdminOptions['stream_publish_pages']) == "true") {
           echo("checked");
@@ -328,10 +338,48 @@ echo '<p class="wpbook_hidden wpbook_option_set_2 sub_options">Page ID: <input t
       echo preg_replace("#[^0-9]#","",htmlentities($wpbookLiteAdminOptions['fb_page_target'])) .'" size="15" /> ';
       echo ' (Information on <a href="http://socialmediaseo.net/2010/02/20/how-to-find-facebook-id/">finding your Page ID</a>)</p>';
       
+	  				
+
+	  
+	  
       echo '<p class="wpbook_hidden wpbook_option_set_2 sub_options">Group ID: <input type="text" name="wpbook_target_group" value="';
         echo preg_replace("#[^0-9]#","",htmlentities($wpbookLiteAdminOptions['wpbook_target_group'])) .'" size="15" /> ';
         echo ' (Generally your GroupID should be in your url, like: http://www.facebook.com/group.php?gid=149948248362737 - the gid is the group ID). </p>';
-      echo '<p><strong>Stream Debug Options</strong><br/><input type="checkbox" name="wpbook_enable_debug" value="true" ';
+      echo '<p class="sub_options"><strong>Profile Post Type Options</strong> (Applied when posting to an individual profile)<br/>';
+				echo '<div style="padding-left: 10px">';
+				echo '<input type="radio" value="post" name="post_as" ';
+				if(($wpbookLiteAdminOptions['wpbook_as_note'] == 'post') || ($wpbookLiteAdminOptions['wpbook_as_note'] == '')) 
+					echo 'checked';	
+				echo " > Publish as Posts. (Default: if you don't know the difference, don't change this.)</p>";
+
+				echo '<p>';
+				echo '<input type="radio" value="note" name="post_as" ';
+				if(($wpbookLiteAdminOptions['wpbook_as_note'] == 'note') || ($wpbookLiteAdminOptions['wpbook_as_note'] == 'true')) 
+					echo 'checked';
+				echo ' > Publish as Notes</p>';
+		
+				echo '<p>';
+				echo '<input type="radio" value="link" name="post_as" ';
+				if($wpbookLiteAdminOptions['wpbook_as_note'] == 'link') 
+					echo 'checked';
+				echo ' > Publish as Links. (Note: This assumes appropriate Facebook open graph metadata is provided by your blog.)</p>';
+				echo '</p></div>'; // end post type options		
+	  
+	  echo '<p class="sub_options"><strong>Page/Group Post Type Options</strong> (Applied when posting to a Page or Group).<br/>';
+				echo '<div style="padding-left: 10px">';
+				echo '<input type="radio" value="post" name="page_post_as" ';
+				if(($wpbookLiteAdminOptions['wpbook_as_link'] == 'post') || ($wpbookLiteAdminOptions['wpbook_as_note'] == '')) 
+					echo 'checked';	
+				echo " > Publish as Posts. (Default: if you don't know the difference, don't change this.)</p>";
+
+				echo '<p>';
+				echo '<input type="radio" value="link" name="page_post_as" ';
+				if($wpbookLiteAdminOptions['wpbook_as_link'] == 'link') 
+					echo 'checked';
+				echo ' > Publish as Links. (Note: This assumes appropriate Facebook open graph metadata is provided by your blog.)</p>';
+				echo '</p></div>'; // end post type options		
+	  
+	  echo '<p><strong>Stream Debug Options</strong><br/><input type="checkbox" name="wpbook_enable_debug" value="true" ';
       if( htmlentities($wpbookLiteAdminOptions['wpbook_enable_debug']) == "true") {
         echo("checked");
       }

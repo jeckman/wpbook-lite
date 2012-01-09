@@ -246,7 +246,7 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 						$debug_string=date("Y-m-d H:i:s",time())." : Publishing as link \n";
 						fwrite($fp, $debug_string);
 					}
-					$fb_response = $facebook->api('/'. $target_admin .'/link', 'POST', $attachment);     
+					$fb_response = $facebook->api('/'. $target_admin .'/links', 'POST', $attachment);     
 					if(WPBOOKDEBUG) {
 						$fp = @fopen($debug_file, 'a');
 						$debug_string=date("Y-m-d H:i:s",time())." : Just published to api, fb_response is ". print_r($fb_response,true) ."\n";
@@ -325,7 +325,7 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 					fwrite($fp, $debug_string);
 				}
 				/* Groups don't accept "Note" type, so it is just "link" or "post" */
-				if(($wpbook_as_note != 'link') {
+				if(($wpbook_as_link != 'link')) {
 					$fb_response = $facebook->api('/'. $wpbook_target_group .'/feed/','POST', $attachment); 
 				} else {
 					$attachment = array(
@@ -404,7 +404,7 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 					fwrite($fp, $debug_string);
 				}
 				/* Can't post to a page as a note, so it is either post or link */ 
-				if($wpbook_as_note == 'link') {
+				if($wpbook_as_link == 'link') {
 					$attachment = array(
 										'link' => $my_permalink,
 										'message' => $wpbook_description,
