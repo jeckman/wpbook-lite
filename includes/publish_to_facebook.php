@@ -40,7 +40,7 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 	$wpbook_user_access_token = get_option('wpbook_lite_user_access_token','');
 	$wpbook_page_access_token = get_option('wpbook_lite_page_access_token','');
   
-	if($access_token == '') {
+	if($wpbook_user_access_token == '') {
 		if(WPBOOKDEBUG) {
 			$fp = @fopen($debug_file, 'a');
 			if(($fp) && (filesize($debug_file) > 500 * 1024)) {  // 500k max to file
