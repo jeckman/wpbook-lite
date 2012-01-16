@@ -1,7 +1,7 @@
 === WPBook Lite ===
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 Tested up to: 3.3
 Requires at least: 2.9
 
@@ -49,6 +49,10 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+
+= 1.2.2 =
+* Wrap try/catch blocks around Facebook permission calls in admin page -
+  should more robustly handle bad data entered in profile ID, app ID, secret. 
 
 = 1.2.1 =
 * Bugfix: Delete data from db when uninstalled
