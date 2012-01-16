@@ -625,6 +625,22 @@ function wpbook_query_vars($vars) {
     return $vars;
 }
 
+// thanks http://wpengineer.com/35/wordpress-plugin-deinstall-data-automatically/ 
+ /**
+ * Check for uninstall hook
+ */
+if ( function_exists('register_uninstall_hook') )
+	register_uninstall_hook(__FILE__, 'wpbooklite_deinstall');
+
+/**
+ * Delete options in database
+ */
+function wpbooklite_deinstall() {
+	delete_option('wpbookLiteAdminOptions');
+	delete_option('wpbook_lite_user_access_token');
+	delete_option('wpbook_lite_page_access_token');
+}
+
 //add gravatar/facebook avatar support outside facebook
 add_filter('get_avatar','wpbook_lite_get_global_facebook_avatar', 1, 3 ); 
 
