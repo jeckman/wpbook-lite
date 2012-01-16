@@ -288,17 +288,17 @@ function wpbook_lite_subpanel() {
 		try {
 			$facebook->setAccessToken($access_token);
 		} catch (FacebookAPIException $e) {
-			echo '<p>Could not set access token. ' . $e->getMessage() .'Error code: '. $e->getCode();    .'</p>';
+			echo '<p>Could not set access token. ' . $e->getMessage() .'Error code: '. $e->getCode()  .'</p>';
 		}
 		try {
 			$uid = $facebook->getUser();
 		} catch (FacebookAPIException $e) {
-			echo '<p>Could not get userid from Facebook. ' . $e->getMessage() .'Error code: '. $e->getCode();    .'</p>';
+			echo '<p>Could not get userid from Facebook. ' . $e->getMessage() .'Error code: '. $e->getCode()    .'</p>';
 		}
 		try {
 			$fb_response = $facebook->api('/'. $uid .'/accounts'); 
 		} catch (FacebookAPIException $e) {
-			echo '<p>Could not get accounts list from Facebook. ' . $e->getMessage() .'Error code: '. $e->getCode();    .'</p>';
+			echo '<p>Could not get accounts list from Facebook. ' . $e->getMessage() .'Error code: '. $e->getCode()    .'</p>';
 			$fb_response = false; 
 		}	
 		echo " end hiding -->";	
