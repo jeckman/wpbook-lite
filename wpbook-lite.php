@@ -267,42 +267,63 @@ function wpbook_lite_subpanel() {
 	if((!empty($wpbookLiteAdminOptions['fb_page_target'])) && ($wpbookLiteAdminOptions['stream_publish_pages'] == "true")) {
 	?>
 	<h4>Permissions for pages</h4>
-		<p>This section will cover permissions for posting to pages.</p>
 	<?php 
     echo "<p>You've indicated you wish to publish to this page: ". $wpbookLiteAdminOptions['fb_page_target'] ."</p>";
     echo "<!-- start hiding for session warnings";
-	$api_key = $wpbookLiteAdminOptions['fb_api_key'];	
+	  $api_key = $wpbookLiteAdminOptions['fb_api_key'];	
 	  $secret  = $wpbookLiteAdminOptions['fb_secret'];
 	  $access_token = get_option('wpbook_lite_user_access_token','');
-	
-	  $facebook = new Facebook(array(
+	  $wpbook_lite_fb_error = false; 
+	  try {
+		$facebook = new Facebook(array(
                               'appId'  => $api_key,
                               'secret' => $secret,						  
                               )
 							);
-	  $facebook->setAccessToken($access_token);
-	  $uid = $facebook->getUser();
-	  $fb_response = $facebook->api('/'. $uid .'/accounts'); 
-	echo " end hiding -->";	
-	   foreach($fb_response['data'] as $page) {
-      if ($page['id'] == $wpbookLiteAdminOptions['fb_page_target']) {
-        $my_wp_page_name = $page['name'];
-        if($page['access_token']) {
-          update_option('wpbook_lite_page_access_token',$page['access_token']);
-          echo '<p>An access token corresponding to the page titled '. $my_wp_page_name .' has been stored.</p>';
-		  echo '<p>It is ' . get_option('wpbook_lite_page_access_token','') . '</p>';
-        } else {
-          echo '<p><strong>ERROR: No access token corresponding to this page was ';
-          echo 'found or stored.</strong> This likely means that either: ';
-          echo '<ul><li>The PageID is entered incorrectly in WPBook settings, or</li>';
-          echo '<li>The Facebook profile currently logged in has not granted the ';
-          echo '"manage_pages" permission appropriately, or</li>';
-          echo '<li>The Facebook profile logged in (and for which an access token ';
-          echo 'has been stored) is not eligible to grant manage_pages for the page ';
-          echo 'in question (not an admin).</li></ul></p>';
-        }
-      }
-    }     
+      } catch (FacebookApiException $e) {
+		echo '<p>Unable to access Facebook API - app id or secret may be wrong.</p>';
+		$wpbook_lite_fb_error = true;
+	  }
+	  if($wpbook_lite_fb_error == false) {
+		try {
+			$facebook->setAccessToken($access_token);
+		} catch (FacebookAPIException $e) {
+			echo '<p>Could not set access token. ' . $e->getMessage() .'Error code: '. $e->getCode();    .'</p>';
+		}
+		try {
+			$uid = $facebook->getUser();
+		} catch (FacebookAPIException $e) {
+			echo '<p>Could not get userid from Facebook. ' . $e->getMessage() .'Error code: '. $e->getCode();    .'</p>';
+		}
+		try {
+			$fb_response = $facebook->api('/'. $uid .'/accounts'); 
+		} catch (FacebookAPIException $e) {
+			echo '<p>Could not get accounts list from Facebook. ' . $e->getMessage() .'Error code: '. $e->getCode();    .'</p>';
+			$fb_response = false; 
+		}	
+		echo " end hiding -->";	
+		if($fb_response) {
+			foreach($fb_response['data'] as $page) {
+				if ($page['id'] == $wpbookLiteAdminOptions['fb_page_target']) {
+					$my_wp_page_name = $page['name'];
+					if($page['access_token']) {
+						update_option('wpbook_lite_page_access_token',$page['access_token']);
+						echo '<p>An access token corresponding to the page titled '. $my_wp_page_name .' has been stored.</p>';
+						echo '<p>It is ' . get_option('wpbook_lite_page_access_token','') . '</p>';
+					} else {
+						echo '<p><strong>ERROR: No access token corresponding to this page was ';
+						echo 'found or stored.</strong> This likely means that either: ';
+						echo '<ul><li>The PageID is entered incorrectly in WPBook settings, or</li>';
+						echo '<li>The Facebook profile currently logged in has not granted the ';
+						echo '"manage_pages" permission appropriately, or</li>';
+						echo '<li>The Facebook profile logged in (and for which an access token ';
+						echo 'has been stored) is not eligible to grant manage_pages for the page ';
+						echo 'in question (not an admin).</li></ul></p>';
+					}
+				}
+			}
+		} // end if fb_response
+	  }	// end if wpbook_lite_fb_error is false	
 	} // end if fb_page_target is set
 ?>
 <h4>Note on permissions for Groups</h4>
