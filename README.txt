@@ -1,7 +1,7 @@
 === WPBook Lite ===
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
-Stable tag: 1.2
+Stable tag: 1.2.1
 Tested up to: 3.3
 Requires at least: 2.9
 
@@ -49,6 +49,10 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+
+= 1.2.1 =
+* Bugfix: Delete data from db when uninstalled
+
 = 1.2 = 
 * Add option to publish as link, note, or post
 
