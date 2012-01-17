@@ -496,7 +496,7 @@ function wpbook_lite_meta_box() {
   checked('no', $wpbook_lite_publish, false);
   echo ' /> <label for="wpbook_fb_publish_no">'.__('no', 'wpbook').'</label>';
   echo '</p>';
-  do_action('wpbook_lite_post_options');
+  do_action('wpbook_lite_store_post_options');
 }
   
 function wpbook_lite_add_meta_box() {
