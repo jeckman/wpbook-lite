@@ -493,7 +493,7 @@ function wpbook_lite_meta_box() {
   checked('yes', $wpbook_lite_publish, true);
   echo ' /> <label for="wpbook_fb_publish_yes">'.__('yes', 'wpbook').'</label> &nbsp;&nbsp;';
   echo '<input type="radio" name="wpbook_lite_fb_publish" id="wpbook_fb_publish_no" value="no" ';
-  checked('no', $wpbook_lite_publish, false);
+  checked('no', $wpbook_lite_publish, true);
   echo ' /> <label for="wpbook_fb_publish_no">'.__('no', 'wpbook').'</label>';
   echo '</p>';
   do_action('wpbook_lite_store_post_options');
