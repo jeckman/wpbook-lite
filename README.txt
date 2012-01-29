@@ -1,7 +1,7 @@
 === WPBook Lite ===
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 Tested up to: 3.3
 Requires at least: 2.9
 
@@ -49,6 +49,9 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+
+=1.2.3 = 
+ * Restrict global filter on gravatars to only comments
 
 = 1.2.2 =
 * Wrap try/catch blocks around Facebook permission calls in admin page -
