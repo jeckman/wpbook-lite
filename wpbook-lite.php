@@ -624,21 +624,20 @@ function wpbook_parse_request($wp) {
 			}
 		$wpbookLiteAdminOptions['fb_api_key'] = $wpbookLiteOptions['fb_api_key'];
 		$wpbookLiteAdminOptions['fb_secret'] = $wpbookLiteOptions['fb_secret'];
-	  
-		// now we need to go get the token using curl
-      
-	  
+	  	  
 		$token_url = 'https://graph.facebook.com/oauth/access_token?client_id='
 		. htmlentities($wpbookLiteAdminOptions['fb_api_key']) . '&redirect_uri='
 		. home_url() .'/%3Fwpbook=oauth&client_secret=' . htmlentities($wpbookLiteAdminOptions['fb_secret']) 
-		. '&code=' . $_REQUEST["code"];      
-		// switched to raw php header redirect as $facebook->redirect was
-		// problematic and no fb session needed in this page
-		$response = @file_get_contents($token_url);
-		$params = null;
-		parse_str($response, $params);
-		update_option('wpbook_lite_user_access_token',$params['access_token']);
-		echo "Done - access token captured";
+		. '&code=' . $_REQUEST["code"];
+		// using wp_remote_request should support multiple capabilities
+		$response = wp_remote_request($token_url);
+		if( strpos($response['body'],'access_token=') !== false) {
+			$my_at = substr($response['body'],strpos($response['body'],'access_token=')+14);
+			update_option('wpbook_lite_user_access_token',$my_at);
+			echo "Succeeded in saving Access Token";
+		} else {
+			echo "Failed in creating access token"; 
+		}
 	 }
     }
   }
