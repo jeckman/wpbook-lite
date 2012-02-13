@@ -1,7 +1,7 @@
 === WPBook Lite ===
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 Tested up to: 3.3
 Requires at least: 2.9
 
@@ -49,8 +49,11 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+= 1.2.4 =
+* Update mechanism for capturing access_token to work on sites where fopen
+  is not allowed, using wp_remote_request. 
 
-=1.2.3 = 
+= 1.2.3 = 
  * Restrict global filter on gravatars to only comments
 
 = 1.2.2 =
