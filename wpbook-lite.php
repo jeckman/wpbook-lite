@@ -632,13 +632,16 @@ function wpbook_parse_request($wp) {
 		// using wp_remote_request should support multiple capabilities
 		$response = wp_remote_request($token_url);
 		if( strpos($response['body'],'access_token=') !== false) {
-			echo $response['body'];
+			// echo $response['body'];
 			$my_at = substr($response['body'],strpos($response['body'],'access_token=')+13);
 			update_option('wpbook_lite_user_access_token',$my_at);
-			echo "Succeeded in saving Access Token";
+			echo "Succeeded in saving Access Token\n";
+			echo '<a href="'. get_bloginfo('home') .'">Return to your blog</a>';
 		} else {
 			echo "Failed in creating access token"; 
+			echo '<a href="'. get_bloginfo('home') .'">Return to your blog</a>';
 		}
+		die(); 
 	 }
     }
   }
