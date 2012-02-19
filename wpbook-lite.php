@@ -632,7 +632,8 @@ function wpbook_parse_request($wp) {
 		// using wp_remote_request should support multiple capabilities
 		$response = wp_remote_request($token_url);
 		if( strpos($response['body'],'access_token=') !== false) {
-			$my_at = substr($response['body'],strpos($response['body'],'access_token=')+14);
+			echo $response['body'];
+			$my_at = substr($response['body'],strpos($response['body'],'access_token=')+13);
 			update_option('wpbook_lite_user_access_token',$my_at);
 			echo "Succeeded in saving Access Token";
 		} else {
