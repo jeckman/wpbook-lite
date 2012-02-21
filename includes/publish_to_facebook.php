@@ -192,10 +192,17 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 				$attachment = apply_filters('wpbook_attachment', $attachment, $my_post->ID);
 				if(WPBOOKDEBUG) {
 					$fp = @fopen($debug_file, 'a');
-					$debug_string=date("Y-m-d H:i:s",time())." : Publishing as note, $my_image is " . $my_image ." \n";
+					$debug_string=date("Y-m-d H:i:s",time())." : Publishing as note, my_image is " . $my_image ." \n";
 					fwrite($fp, $debug_string);
 				}
-				$fb_response = $facebook->api('/'. $target_admin .'/notes', 'POST', $attachment);
+				try {
+					$fb_response = $facebook->api('/'. $target_admin .'/notes', 'POST', $attachment);
+				} catch (FacebookApiException $e) {
+					if($wpbook_show_errors) {
+						$wpbook_message = 'Caught exception publishing to user profile as note: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
+						wp_die($wpbook_message,'WPBook Error');
+					} // end if for show errors
+				} // end try-catch	
 				if(WPBOOKDEBUG) {
 					$fp = @fopen($debug_file, 'a');
 					$debug_string=date("Y-m-d H:i:s",time())." : Just published to api, fb_response is ". print_r($fb_response,true) ."\n";
@@ -225,10 +232,17 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 				$attachment = apply_filters('wpbook_attachment', $attachment, $my_post->ID);
 				if(WPBOOKDEBUG) {
 					$fp = @fopen($debug_file, 'a');
-					$debug_string=date("Y-m-d H:i:s",time())." : Publishing as excerpt, $my_image is " . $my_image ." \n";
+					$debug_string=date("Y-m-d H:i:s",time())." : Publishing as post, my_image is " . $my_image ." \n";
 					fwrite($fp, $debug_string);
 				}
-				$fb_response = $facebook->api('/'. $target_admin .'/feed', 'POST', $attachment);     
+				try {
+					$fb_response = $facebook->api('/'. $target_admin .'/feed', 'POST', $attachment);     
+				} catch (FacebookApiException $e) {
+					if($wpbook_show_errors) {
+						$wpbook_message = 'Caught exception publishing to user profile as post: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
+						wp_die($wpbook_message,'WPBook Error');
+					} // end if for show errors
+				} // end try-catch	
 				if(WPBOOKDEBUG) {
 					$fp = @fopen($debug_file, 'a');
 					$debug_string=date("Y-m-d H:i:s",time())." : Just published to api, fb_response is ". print_r($fb_response,true) ."\n";
@@ -245,7 +259,14 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 					$debug_string=date("Y-m-d H:i:s",time())." : Publishing as link \n";
 					fwrite($fp, $debug_string);
 				}
-				$fb_response = $facebook->api('/'. $target_admin .'/links', 'POST', $attachment);     
+				try {
+					$fb_response = $facebook->api('/'. $target_admin .'/links', 'POST', $attachment);
+				} catch (FacebookApiException $e) {
+					if($wpbook_show_errors) {
+						$wpbook_message = 'Caught exception publishing to user profile as link: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
+						wp_die($wpbook_message,'WPBook Error');
+					} // end if for show errors
+				} // end try-catch					
 				if(WPBOOKDEBUG) {
 					$fp = @fopen($debug_file, 'a');
 					$debug_string=date("Y-m-d H:i:s",time())." : Just published to api, fb_response is ". print_r($fb_response,true) ."\n";
@@ -318,13 +339,27 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 			}
 			/* Groups don't accept "Note" type, so it is just "link" or "post" */
 			if(($wpbook_as_link != 'link')) {
-				$fb_response = $facebook->api('/'. $wpbook_target_group .'/feed/','POST', $attachment); 
+				try {
+					$fb_response = $facebook->api('/'. $wpbook_target_group .'/feed/','POST', $attachment); 
+				} catch (FacebookApiException $e) {
+					if($wpbook_show_errors) {
+						$wpbook_message = 'Caught exception publishing to group as Post: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
+						wp_die($wpbook_message,'WPBook Error');
+					} // end if for show errors
+				} // end try-catch	
 			} else {
 				$attachment = array(
 									'link' => $my_permalink,
 									'message' => $wpbook_description,
 									);
-				$fb_response = $facebook->api('/'. $wpbook_target_group .'/links/','POST',$attachment);					
+				try {
+					$fb_response = $facebook->api('/'. $wpbook_target_group .'/links/','POST',$attachment);
+				} catch (FacebookApiException $e) {
+					if($wpbook_show_errors) {
+						$wpbook_message = 'Caught exception publishing to group as link: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
+						wp_die($wpbook_message,'WPBook Error');
+					} // end if for show errors
+				} // end try-catch						
 			} 
 			if(WPBOOKDEBUG) {
 				$fp = @fopen($debug_file, 'a');
@@ -393,9 +428,23 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 									'link' => $my_permalink,
 									'message' => $wpbook_description,
 									);
-				$fb_response = $facebook->api('/'. $target_page .'/links','POST', $attachment);
+				try {
+					$fb_response = $facebook->api('/'. $target_page .'/links','POST', $attachment);
+				} catch (FacebookApiException $e) {
+					if($wpbook_show_errors) {
+						$wpbook_message = 'Caught exception publishing to page as Post: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
+						wp_die($wpbook_message,'WPBook Error');
+					} // end if for show errors
+				} // end try-catch	
 			} else {
-				$fb_response = $facebook->api('/'. $target_page .'/feed/','POST', $attachment); 				
+				try {
+					$fb_response = $facebook->api('/'. $target_page .'/feed/','POST', $attachment); 
+				} catch (FacebookApiException $e) {
+					if($wpbook_show_errors) {
+						$wpbook_message = 'Caught exception publishing to page as Post: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
+						wp_die($wpbook_message,'WPBook Error');
+					} // end if for show errors
+				} // end try-catch	
 			}
 			
 			
