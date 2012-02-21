@@ -637,15 +637,14 @@ function wpbook_parse_request($wp) {
 			echo "WP Error is " . $response->get_error_message(); 
 			die(); 
 		}
-		if((is_array($response)) && (array_key_exists($response['body'])) && (strpos($response['body'],'access_token=') !== false)) {
-			// echo $response['body'];
+		if(strpos($response['body'],'access_token=') !== false) {
 			$my_at = substr($response['body'],strpos($response['body'],'access_token=')+13);
 			update_option('wpbook_lite_user_access_token',$my_at);
 			echo "Succeeded in saving Access Token\n";
 			echo '<a href="'. get_bloginfo('home') .'">Return to your blog</a>';
 		} else {
-			echo "Failed in creating access token"; 
-			echo "Response was ";
+			echo "Failed in creating access token\n"; 
+			echo "Response was: \n";
 			if (is_array($response)) {
 				echo print_r($response,true);
 			} else {
