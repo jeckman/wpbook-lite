@@ -456,7 +456,7 @@ echo '<p><input type="submit" value="Save" class="button-primary"';
       echo'<div id="help">';
       echo '<h2>Need Help?</h2>';
       echo '<p>If you need help setting up this application first read the <a href="http://wpbook.net/docs/install" target="_blank"> install instructions</a>.';
-      echo 'Support can also be found on <a href="http://wordpress.org/extend/plugins/wpbook/" target="_blank">the plugin page</a> </p><h3>Thanks for using WPBook!</h3>';
+      echo 'Support can also be found on <a href="http://wordpress.org/extend/plugins/wpbook-lite/" target="_blank">the plugin page</a> </p><h3>Thanks for using WPBook Lite!</h3>';
       echo'</div>';
   } else {
     echo '<div class="wrap"><p>Sorry, you are not allowed to access ';

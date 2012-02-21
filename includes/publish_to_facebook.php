@@ -161,104 +161,97 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 			}
       
 			$fb_response = '';
-			try{
-				if(($wpbook_as_note == 'note') || ($wpbook_as_note == 'true')) {
-					/* notes on walls don't allow much */ 
-					$allowedtags = array('img'=>array('src'=>array(), 'style'=>array()), 
-									'span'=>array('id'=>array(), 'style'=>array()), 
-									'a'=>array('href'=>array()), 'p'=>array(),
-									'b'=>array(),'i'=>array(),'u'=>array(),'big'=>array(),
-									'small'=>array(), 'ul' => array(), 'li'=>array(),
-									'ol'=> array(), 'blockquote'=> array(),'h1'=>array(),
-									'h2'=> array(), 'h3'=>array(),
-									);
-					if(!empty($my_image)) {
-						/* message, picture, link, name, caption, description, source */      
-						$attachment = array( 
-											'subject' => $my_title,
-											'link' => $my_permalink,
-											'message' => wp_kses(stripslashes(apply_filters('the_content',$my_post->post_content)),$allowedtags),  
-											'picture' => $my_image, 
-											'actions' => $actions,
-											); 
-					} else {
-						$attachment = array( 
-											'subject' => $my_title,
-											'link' => $my_permalink,
-											'message' => wp_kses(stripslashes(apply_filters('the_content',$my_post->post_content)),$allowedtags), 
-											'actions' => $actions,
-											); 
-					}
-					/* allow other plugins to impact the attachment before posting */ 
-					$attachment = apply_filters('wpbook_attachment', $attachment, $my_post->ID);
-					if(WPBOOKDEBUG) {
-						$fp = @fopen($debug_file, 'a');
-						$debug_string=date("Y-m-d H:i:s",time())." : Publishing as note, $my_image is " . $my_image ." \n";
-						fwrite($fp, $debug_string);
-					}
-					$fb_response = $facebook->api('/'. $target_admin .'/notes', 'POST', $attachment);
-					if(WPBOOKDEBUG) {
-						$fp = @fopen($debug_file, 'a');
-						$debug_string=date("Y-m-d H:i:s",time())." : Just published to api, fb_response is ". print_r($fb_response,true) ."\n";
-						fwrite($fp, $debug_string);
-					}
-				} elseif ($wpbook_as_note == 'post') {
-					// post as a post
-					if(!empty($my_image)) {
-						/* message, picture, link, name, caption, description, source */      
-						$attachment = array( 
-											'name' => $my_title,
-											'link' => $my_permalink,
-											'description' => $wpbook_description,  
-											'picture' => $my_image,
-											'actions' => $actions,
-											); 
-					} else {
-						$attachment = array( 
-											'name' => $my_title,
-											'link' => $my_permalink,
-											'description' => $wpbook_description,  
-											'comments_xid' => $post_ID, 
-											'actions' => $actions,
-											); 
-					}		
-					/* allow other plugins to impact the attachment before posting */ 
-					$attachment = apply_filters('wpbook_attachment', $attachment, $my_post->ID);
-					if(WPBOOKDEBUG) {
-						$fp = @fopen($debug_file, 'a');
-						$debug_string=date("Y-m-d H:i:s",time())." : Publishing as excerpt, $my_image is " . $my_image ." \n";
-						fwrite($fp, $debug_string);
-					}
-					$fb_response = $facebook->api('/'. $target_admin .'/feed', 'POST', $attachment);     
-					if(WPBOOKDEBUG) {
-						$fp = @fopen($debug_file, 'a');
-						$debug_string=date("Y-m-d H:i:s",time())." : Just published to api, fb_response is ". print_r($fb_response,true) ."\n";
-						fwrite($fp, $debug_string);
-					}
-				} elseif ($wpbook_as_note == 'link') {
-					/* links have link, message */ 
-					$attachment = array(
+			if(($wpbook_as_note == 'note') || ($wpbook_as_note == 'true')) {
+				/* notes on walls don't allow much */ 
+				$allowedtags = array('img'=>array('src'=>array(), 'style'=>array()), 
+								'span'=>array('id'=>array(), 'style'=>array()), 
+								'a'=>array('href'=>array()), 'p'=>array(),
+								'b'=>array(),'i'=>array(),'u'=>array(),'big'=>array(),
+								'small'=>array(), 'ul' => array(), 'li'=>array(),
+								'ol'=> array(), 'blockquote'=> array(),'h1'=>array(),
+								'h2'=> array(), 'h3'=>array(),
+								);
+				if(!empty($my_image)) {
+					/* message, picture, link, name, caption, description, source */      
+					$attachment = array( 
+										'subject' => $my_title,
 										'link' => $my_permalink,
-										'message' => $wpbook_description,
-										);
-					if(WPBOOKDEBUG) {
-						$fp = @fopen($debug_file, 'a');
-						$debug_string=date("Y-m-d H:i:s",time())." : Publishing as link \n";
-						fwrite($fp, $debug_string);
-					}
-					$fb_response = $facebook->api('/'. $target_admin .'/links', 'POST', $attachment);     
-					if(WPBOOKDEBUG) {
-						$fp = @fopen($debug_file, 'a');
-						$debug_string=date("Y-m-d H:i:s",time())." : Just published to api, fb_response is ". print_r($fb_response,true) ."\n";
-						fwrite($fp, $debug_string);
-					}					
+										'message' => wp_kses(stripslashes(apply_filters('the_content',$my_post->post_content)),$allowedtags),  
+										'picture' => $my_image, 
+										'actions' => $actions,
+										); 
+				} else {
+					$attachment = array( 
+										'subject' => $my_title,
+										'link' => $my_permalink,
+										'message' => wp_kses(stripslashes(apply_filters('the_content',$my_post->post_content)),$allowedtags), 
+										'actions' => $actions,
+										); 
 				}
-			} catch (FacebookApiException $e) {
-				if($wpbook_show_errors) {
-					$wpbook_message = 'Caught exception in stream publish for user: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
-					wp_die($wpbook_message,'WPBook Error');
-				} // end if for show errors
-			} // end try-catch
+				/* allow other plugins to impact the attachment before posting */ 
+				$attachment = apply_filters('wpbook_attachment', $attachment, $my_post->ID);
+				if(WPBOOKDEBUG) {
+					$fp = @fopen($debug_file, 'a');
+					$debug_string=date("Y-m-d H:i:s",time())." : Publishing as note, $my_image is " . $my_image ." \n";
+					fwrite($fp, $debug_string);
+				}
+				$fb_response = $facebook->api('/'. $target_admin .'/notes', 'POST', $attachment);
+				if(WPBOOKDEBUG) {
+					$fp = @fopen($debug_file, 'a');
+					$debug_string=date("Y-m-d H:i:s",time())." : Just published to api, fb_response is ". print_r($fb_response,true) ."\n";
+					fwrite($fp, $debug_string);
+				}
+			} elseif ($wpbook_as_note == 'post') {
+				// post as a post
+				if(!empty($my_image)) {
+					/* message, picture, link, name, caption, description, source */      
+					$attachment = array( 
+										'name' => $my_title,
+										'link' => $my_permalink,
+										'description' => $wpbook_description,  
+										'picture' => $my_image,
+										'actions' => $actions,
+										); 
+				} else {
+					$attachment = array( 
+										'name' => $my_title,
+										'link' => $my_permalink,
+										'description' => $wpbook_description,  
+										'comments_xid' => $post_ID, 
+										'actions' => $actions,
+										); 
+				}		
+				/* allow other plugins to impact the attachment before posting */ 
+				$attachment = apply_filters('wpbook_attachment', $attachment, $my_post->ID);
+				if(WPBOOKDEBUG) {
+					$fp = @fopen($debug_file, 'a');
+					$debug_string=date("Y-m-d H:i:s",time())." : Publishing as excerpt, $my_image is " . $my_image ." \n";
+					fwrite($fp, $debug_string);
+				}
+				$fb_response = $facebook->api('/'. $target_admin .'/feed', 'POST', $attachment);     
+				if(WPBOOKDEBUG) {
+					$fp = @fopen($debug_file, 'a');
+					$debug_string=date("Y-m-d H:i:s",time())." : Just published to api, fb_response is ". print_r($fb_response,true) ."\n";
+					fwrite($fp, $debug_string);
+				}
+			} elseif ($wpbook_as_note == 'link') {
+				/* links have link, message */ 
+				$attachment = array(
+									'link' => $my_permalink,
+									'message' => $wpbook_description,
+									);
+				if(WPBOOKDEBUG) {
+					$fp = @fopen($debug_file, 'a');
+					$debug_string=date("Y-m-d H:i:s",time())." : Publishing as link \n";
+					fwrite($fp, $debug_string);
+				}
+				$fb_response = $facebook->api('/'. $target_admin .'/links', 'POST', $attachment);     
+				if(WPBOOKDEBUG) {
+					$fp = @fopen($debug_file, 'a');
+					$debug_string=date("Y-m-d H:i:s",time())." : Just published to api, fb_response is ". print_r($fb_response,true) ."\n";
+					fwrite($fp, $debug_string);
+				}					
+			}
 			if($fb_response != '') {
 				add_post_meta($my_post->ID,'_wpbook_user_stream_id', $fb_response[id]);
 				add_post_meta($my_post->ID,'_wpbook_user_stream_time',0); // no comments imported yet
@@ -298,54 +291,46 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 				fwrite($fp, $debug_string);
 			}
       
-			try{
-				// post as an post
-				if(!empty($my_image)) {
-					/* message, picture, link, name, caption, description, source */      
-					$attachment = array( 
-										'name' => $my_title,
-										'link' => $my_permalink,
-										'description' => $wpbook_description,  
-										'picture' => $my_image, 
-										'actions' => $actions,
-										); 
-				} else {
-					$attachment = array( 
-										'name' => $my_title,
-										'link' => $my_permalink,
-										'description' => $wpbook_description, 
-										'actions' => $actions,
-										); 
-				}
-				/* allow other plugins to impact the attachment before posting */ 
-				$attachment = apply_filters('wpbook_attachment', $attachment, $my_post->ID);
-				if(WPBOOKDEBUG) {
-					$fp = @fopen($debug_file, 'a');
-					$debug_string=date("Y-m-d H:i:s",time())." : Publishing to group, image is " . $my_image ." \n";
-					fwrite($fp, $debug_string);
-				}
-				/* Groups don't accept "Note" type, so it is just "link" or "post" */
-				if(($wpbook_as_link != 'link')) {
-					$fb_response = $facebook->api('/'. $wpbook_target_group .'/feed/','POST', $attachment); 
-				} else {
-					$attachment = array(
-										'link' => $my_permalink,
-										'message' => $wpbook_description,
-										);
-					$fb_response = $facebook->api('/'. $wpbook_target_group .'/links/','POST',$attachment);					
-				} 
-				if(WPBOOKDEBUG) {
-					$fp = @fopen($debug_file, 'a');
-					$debug_string=date("Y-m-d H:i:s",time())." : Just published to group via api, fb_response is ". print_r($fb_response,true) ."\n";
-					fwrite($fp, $debug_string);
-				}
-			} catch (FacebookApiException $e) {
-				if($wpbook_show_errors) {
-					$fp = @fopen($debug_file, 'a');
-					$wpbook_message = 'Caught exception in publish to group ' . $e->getMessage() . ' Error code: ' . $e->getCode();
-					wp_die($wpbook_message,'WPBook Error');
-				} // end if for show errors
-			} // end try/catch for publish to group
+			// post as an post
+			if(!empty($my_image)) {
+				/* message, picture, link, name, caption, description, source */      
+				$attachment = array( 
+									'name' => $my_title,
+									'link' => $my_permalink,
+									'description' => $wpbook_description,  
+									'picture' => $my_image, 
+									'actions' => $actions,
+									); 
+			} else {
+				$attachment = array( 
+									'name' => $my_title,
+									'link' => $my_permalink,
+									'description' => $wpbook_description, 
+									'actions' => $actions,
+									); 
+			}
+			/* allow other plugins to impact the attachment before posting */ 
+			$attachment = apply_filters('wpbook_attachment', $attachment, $my_post->ID);
+			if(WPBOOKDEBUG) {
+				$fp = @fopen($debug_file, 'a');
+				$debug_string=date("Y-m-d H:i:s",time())." : Publishing to group, image is " . $my_image ." \n";
+				fwrite($fp, $debug_string);
+			}
+			/* Groups don't accept "Note" type, so it is just "link" or "post" */
+			if(($wpbook_as_link != 'link')) {
+				$fb_response = $facebook->api('/'. $wpbook_target_group .'/feed/','POST', $attachment); 
+			} else {
+				$attachment = array(
+									'link' => $my_permalink,
+									'message' => $wpbook_description,
+									);
+				$fb_response = $facebook->api('/'. $wpbook_target_group .'/links/','POST',$attachment);					
+			} 
+			if(WPBOOKDEBUG) {
+				$fp = @fopen($debug_file, 'a');
+				$debug_string=date("Y-m-d H:i:s",time())." : Just published to group via api, fb_response is ". print_r($fb_response,true) ."\n";
+				fwrite($fp, $debug_string);
+			}
 			if($fb_response != '') {
 				add_post_meta($my_post->ID,'_wpbook_group_stream_id',$fb_response[id]);
 				add_post_meta($my_post->ID,'_wpbook_group_stream_time',0); // no comments imported
@@ -377,56 +362,48 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 				fwrite($fp, $debug_string);
 			}
             
-			try{
-				// post as an excerpt
-				if(!empty($my_image)) {
-					/* message, picture, link, name, caption, description, source */      
-					$attachment = array( 
-										'name' => $my_title,
-										'link' => $my_permalink,
-										'description' => $wpbook_description,  
-										'picture' => $my_image, 
-										'actions' => $actions,                        
-										); 
-				} else {
-					$attachment = array( 
-										'name' => $my_title,
-										'link' => $my_permalink,
-										'description' => $wpbook_description,  
-										'actions' => $actions,
-										); 
-				}
-				/* allow other plugins to impact the attachment before posting */ 
-				$attachment = apply_filters('wpbook_attachment', $attachment, $my_post->ID);
-				if(WPBOOKDEBUG) {
-					$fp = @fopen($debug_file, 'a');
-					$debug_string=date("Y-m-d H:i:s",time())." : Publishing to page, image is " . $my_image ." \n";
-					fwrite($fp, $debug_string);
-				}
-				/* Can't post to a page as a note, so it is either post or link */ 
-				if($wpbook_as_link == 'link') {
-					$attachment = array(
-										'link' => $my_permalink,
-										'message' => $wpbook_description,
-										);
-					$fb_response = $facebook->api('/'. $target_page .'/links','POST', $attachment);
-				} else {
-					$fb_response = $facebook->api('/'. $target_page .'/feed/','POST', $attachment); 				
-				}
-				
-				
-				if(WPBOOKDEBUG) {
-					$fp = @fopen($debug_file, 'a');
-					$debug_string=date("Y-m-d H:i:s",time())." : Just published as page to api, fb_response is ". print_r($fb_response,true) ."\n";
-					fwrite($fp, $debug_string);
-				}
-			} catch (FacebookApiException $e) {
-				if($wpbook_show_errors) {
-					$fp = @fopen($debug_file, 'a');
-					$wpbook_message = 'Caught exception in publish to page ' . $e->getMessage() . ' Error code: ' . $e->getCode();
-					wp_die($wpbook_message,'WPBook Error');
-				} // end if for show errors
-			} // end try/catch for publish to page
+			// post as an excerpt
+			if(!empty($my_image)) {
+				/* message, picture, link, name, caption, description, source */      
+				$attachment = array( 
+									'name' => $my_title,
+									'link' => $my_permalink,
+									'description' => $wpbook_description,  
+									'picture' => $my_image, 
+									'actions' => $actions,                        
+									); 
+			} else {
+				$attachment = array( 
+									'name' => $my_title,
+									'link' => $my_permalink,
+									'description' => $wpbook_description,  
+									'actions' => $actions,
+									); 
+			}
+			/* allow other plugins to impact the attachment before posting */ 
+			$attachment = apply_filters('wpbook_attachment', $attachment, $my_post->ID);
+			if(WPBOOKDEBUG) {
+				$fp = @fopen($debug_file, 'a');
+				$debug_string=date("Y-m-d H:i:s",time())." : Publishing to page, image is " . $my_image ." \n";
+				fwrite($fp, $debug_string);
+			}
+			/* Can't post to a page as a note, so it is either post or link */ 
+			if($wpbook_as_link == 'link') {
+				$attachment = array(
+									'link' => $my_permalink,
+									'message' => $wpbook_description,
+									);
+				$fb_response = $facebook->api('/'. $target_page .'/links','POST', $attachment);
+			} else {
+				$fb_response = $facebook->api('/'. $target_page .'/feed/','POST', $attachment); 				
+			}
+			
+			
+			if(WPBOOKDEBUG) {
+				$fp = @fopen($debug_file, 'a');
+				$debug_string=date("Y-m-d H:i:s",time())." : Just published as page to api, fb_response is ". print_r($fb_response,true) ."\n";
+				fwrite($fp, $debug_string);
+			}
 			if($fb_response != '') {
 				add_post_meta($my_post->ID,'_wpbook_page_stream_id',$fb_response[id]);
 				add_post_meta($my_post->ID,'_wpbook_page_stream_time',0); // no comments imported
