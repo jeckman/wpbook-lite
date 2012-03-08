@@ -253,7 +253,7 @@ function wpbook_lite_subpanel() {
 		<p>You have to grant permissions now, so that the Facebook application you've just created can access
 		your personal profile and post on your behalf.</p>
 		
-		<P><a href="https://www.facebook.com/dialog/oauth?client_id=<?php echo htmlentities($wpbookLiteAdminOptions['fb_api_key']); ?>&redirect_uri=<?php echo home_url(); ?>/%3Fwpbook=oauth&scope=read_stream,offline_access,publish_stream,manage_pages">Generate Access Token</a></p>
+		<P><a href="https://www.facebook.com/dialog/oauth?client_id=<?php echo htmlentities($wpbookLiteAdminOptions['fb_api_key']); ?>&redirect_uri=<?php echo home_url(); ?>/%3Fwpbook=oauth&scope=read_stream,offline_access,publish_stream,manage_pages,user_groups">Generate Access Token</a></p>
 	 
 		<p>That will trigger a multiple step process which will generate an access token and store it - you should see your blog home 
 		page load with a message at the top declaring success or offering an error. Revisit this page and you should see the access code stored below: </p>

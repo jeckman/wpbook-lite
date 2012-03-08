@@ -50,6 +50,9 @@ This plugin requires PHP 5.
 
 == Changelog ==
 
+* Added permission check and grant for user_groups, required to publish to 
+  non-public groups
+
 = 1.2.6 = 
 * Added 'auto-draft-to-publish' post transition state, to better support posts
   created by XML-RPC clients, including Windows Live Writer
