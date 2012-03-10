@@ -1,7 +1,7 @@
 === WPBook Lite ===
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
-Stable tag: 1.2.6
+Stable tag: 1.3
 Tested up to: 3.3.1
 Requires at least: 2.9
 
@@ -49,7 +49,11 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
-
+= 1.3 = 
+* New feature: added "message" to post-meta box; used it text is entered into
+  it instead of the excerpt for the post. 
+* Bugfix: duplicate post meta (custom fields) for each save of post
+* Bugfix: Publishing to facebook regardless of setting meta-box to no
 * Added permission check and grant for user_groups, required to publish to 
   non-public groups
 

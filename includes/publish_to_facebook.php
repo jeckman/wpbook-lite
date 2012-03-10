@@ -77,24 +77,29 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 			fwrite($fp, $debug_string);
 		}
     
-		$publish_meta = get_post_meta($my_post->ID,'wpbook_fb_publish',true); 
+		$publish_meta = get_post_meta($my_post->ID,'wpbook_lite_fb_publish',true); 
 		if(($publish_meta == 'no')) { // user chose not to post this one
 			return;
 		}
 		$my_title=$my_post->post_title;
 		$my_author=get_userdata($my_post->post_author)->display_name;
 		$my_permalink = get_permalink($post_ID);
+		$publish_meta_message = get_post_meta($my_post->ID,'wpbook_lite_message',true);
      
 		if(WPBOOKDEBUG) {
 			$fp = @fopen($debug_file, 'a');
 			$debug_string=date("Y-m-d H:i:s",time())." : My permalink is ". $my_permalink ."\n";
 			fwrite($fp, $debug_string);
 		}
-    
-		if(($my_post->post_excerpt) && ($my_post->post_excerpt != '')) {
-			$wpbook_description = stripslashes(wp_filter_nohtml_kses(apply_filters('the_content',$my_post->post_excerpt)));
-		} else { 
-			$wpbook_description = stripslashes(wp_filter_nohtml_kses(apply_filters('the_content',$my_post->post_content)));
+
+		if($publish_meta_message) {
+			$wpbook_description = $publish_meta_message;
+		} else {
+			if(($my_post->post_excerpt) && ($my_post->post_excerpt != '')) {
+				$wpbook_description = stripslashes(wp_filter_nohtml_kses(apply_filters('the_content',$my_post->post_excerpt)));
+			} else { 
+				$wpbook_description = stripslashes(wp_filter_nohtml_kses(apply_filters('the_content',$my_post->post_content)));
+			}
 		}
 		if(strlen($wpbook_description) >= 995) {
 			$space_index = strrpos(substr($wpbook_description, 0, 995), ' ');

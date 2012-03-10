@@ -2,12 +2,12 @@
 /*
 Plugin Name: WPBook Lite
 Plugin URI: http://wpbook.net/
-Date: 2012, February 29th
+Date: 2012, March 10th
 Description: Plugin to cross post Wordpress Blog posts to Facebook. 
 Author: John Eckman
 Author URI: http://johneckman.com
-Version: 1.2.6
-Stable tag: 1.2.6
+Version: 1.3
+Stable tag: 1.3
 
 */
   
@@ -483,65 +483,67 @@ function wpbook_lite_publish_to_facebook($post_ID) {
  * posts to twitter
  */
 function wpbook_lite_meta_box() {
-  global $post;
-  $wpbook_lite_publish = get_post_meta($post->ID, 'wpbook_lite_fb_publish', true);
-  if ($wpbook_lite_publish == '') {
-    $wpbook_lite_publish = 'yes';
-  }
-  echo '<p>'.__('Publish this post to Facebook Wall?', 'wpbook_lite').'<br/>';
-  echo '<input type="radio" name="wpbook_lite_fb_publish" id="wpbook_fb_publish_yes" value="yes" ';
-  checked('yes', $wpbook_lite_publish, true);
-  echo ' /> <label for="wpbook_fb_publish_yes">'.__('yes', 'wpbook').'</label> &nbsp;&nbsp;';
-  echo '<input type="radio" name="wpbook_lite_fb_publish" id="wpbook_fb_publish_no" value="no" ';
-  checked('no', $wpbook_lite_publish, true);
-  echo ' /> <label for="wpbook_fb_publish_no">'.__('no', 'wpbook').'</label>';
-  echo '</p>';
-  do_action('wpbook_lite_store_post_options');
+	global $post;
+	$wpbook_lite_publish = get_post_meta($post->ID, 'wpbook_lite_fb_publish', true);
+	$wpbook_lite_message = get_post_meta($post->ID, 'wpbook_lite_message', true); 
+
+	if ($wpbook_lite_publish == '') {
+		$wpbook_lite_publish = 'yes';
+	}
+	echo '<p>'.__('Publish this post to Facebook Wall?', 'wpbook_lite').'<br/>';
+	echo '<input type="radio" name="wpbook_lite_fb_publish" id="wpbook_lite_fb_publish_yes" value="yes" ';
+	checked('yes', $wpbook_lite_publish, true);
+	echo ' /> <label for="wpbook_lite_fb_publish_yes">'.__('Yes', 'wpbook_lite').'</label> &nbsp;&nbsp;';
+	echo '<input type="radio" name="wpbook_lite_fb_publish" id="wpbook_lite_fb_publish_no" value="no" ';
+	checked('no', $wpbook_lite_publish, true);
+	echo ' /> <label for="wpbook_lite_fb_publish_no">'.__('No', 'wpbook_lite').'</label>';
+	echo '</p>';
+	echo '<p>'.__('Message for Facebook post: (plain text)','wpbook_lite').'<br/>';
+	echo '<p><textarea cols="60" rows="4" style="width:95%" name="wpbook_lite_message" id="wpbook_lite_message">';
+	echo $wpbook_lite_message;
+	echo '</textarea></p>';
+	do_action('wpbook_lite_store_post_options');
 }
   
 function wpbook_lite_add_meta_box() {
-  global $wp_version;
-  if (version_compare($wp_version, '2.7', '>=')) {
-    add_meta_box('wpbook_lite_post_form','WPBook-Lite', 'wpbook_lite_meta_box', 'post', 'side');
-  } else {
-    add_meta_box('wpbook_lite_post_form','WPBook-Lite', 'wpbook_lite_meta_box', 'post', 'normal');
-  }
+	global $wp_version;
+	if (version_compare($wp_version, '2.7', '>=')) {
+		add_meta_box('wpbook_lite_post_form','WPBook-Lite', 'wpbook_lite_meta_box', 'post', 'side');
+	} else {
+		add_meta_box('wpbook_lite_post_form','WPBook-Lite', 'wpbook_lite_meta_box', 'post', 'normal');
+	}
 }
   
-function wpbook_lite_store_post_options($post_id, $post = false) {
-  if (!$post || $post->post_type == 'revision') { // store the metadata with the post, not the revision
-		return;
-	}  
-  $wpbookLiteAdminOptions = wpbook_lite_getAdminOptions();
-  $post = get_post($post_id);
-  $stored_meta = get_post_meta($post_id, 'wpbook_lite_fb_publish', true);
-  $posted_meta = $_POST['wpbook_lite_fb_publish'];
+function wpbook_lite_store_post_options($post_id, $post = false) {  
+	$wpbookLiteAdminOptions = wpbook_lite_getAdminOptions();
+	$post = get_post($post_id);
+	$stored_meta = get_post_meta($post->ID, 'wpbook_lite_fb_publish',TRUE);
+	$posted_meta = $_POST['wpbook_lite_fb_publish'];
+	$wpbook_lite_message = $_POST['wpbook_lite_message']; 
+	$save = false;
+	/* if there is $posted_meta, that takes priority over stored */
+	if (!empty($posted_meta)) { 
+		$posted_meta == 'yes' ? $meta = 'yes' : $meta = 'no';
+		$save = true;
+	}
+	/* if no posted meta, check stored meta */ 
+	else if (empty($stored_meta)) {
+		/* if no stored meta, but streaming publishing is on, default to yes */
+		if (($wpbookLiteAdminOptions['stream_publish']) || ($wpbookLiteAdminOptions['stream_publish_pages'])) {
+			$meta = 'yes';
+		} else {
+		$meta = 'no';
+		}
+		$save = true;
+		/* if there is stored meta, and user didn't touch it, don't save */ 
+	} else {
+		$save = false;
+	}
     
-  $save = false;
-  /* if there is $posted_meta, that takes priority over stored */
-  if (!empty($posted_meta)) { 
-    $posted_meta == 'yes' ? $meta = 'yes' : $meta = 'no';
-    $save = true;
-  }
-  /* if no posted meta, check stored meta */ 
-  else if (empty($stored_meta)) {
-    /* if no stored meta, but streaming publishing is on, default to yes */
-    if (($wpbookLiteAdminOptions['stream_publish']) || ($wpbookLiteAdminOptions['stream_publish_pages'])) {
-      $meta = 'yes';
-    } else {
-      $meta = 'no';
-    }
-    $save = true;
-  /* if there is stored meta, and user didn't touch it, don't save */ 
-  } else {
-    $save = false;
-  }
-    
-  if ($save) {
-    if (!update_post_meta($post_id, 'wpbook_lite_fb_publish', $meta)) {
-      add_post_meta($post_id, 'wpbook_lite_fb_publish', $meta);
-    }
-  }
+	if ($save) {
+		update_post_meta($post_id, 'wpbook_lite_fb_publish', $meta); 
+	}
+	update_post_meta($post_id, 'wpbook_lite_message', $wpbook_lite_message); 
 }
 add_action('draft_post', 'wpbook_lite_store_post_options', 1, 2);
 add_action('publish_post', 'wpbook_lite_store_post_options', 1, 2);
