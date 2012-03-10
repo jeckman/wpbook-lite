@@ -679,6 +679,13 @@ function wpbooklite_deinstall() {
 	delete_option('wpbookLiteAdminOptions');
 	delete_option('wpbook_lite_user_access_token');
 	delete_option('wpbook_lite_page_access_token');
+	$wpbook_lite_allposts = get_posts('numberposts=-1&post_type=post&post_status=any');
+	foreach( $wpbook_lite_allposts as $wpbook_lite_postinfo) {
+		delete_post_meta($wpbook_lite_postinfo->ID, 'wpbook_lite_fb_publish');
+		delete_post_meta($wpbook_lite_postinfo->ID, 'wpbook_lite_message');
+	}
+	
+	
 }
 
 //add gravatar/facebook avatar support outside facebook

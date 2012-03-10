@@ -49,6 +49,9 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+
+* Added hook to remove all post_meta wpbook lite creates on uninstall
+
 = 1.3 = 
 * New feature: added "message" to post-meta box; used it text is entered into
   it instead of the excerpt for the post. 
