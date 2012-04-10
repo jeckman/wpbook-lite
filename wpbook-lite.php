@@ -632,7 +632,7 @@ function wpbook_parse_request($wp) {
 		. home_url() .'/%3Fwpbook=oauth&client_secret=' . htmlentities($wpbookLiteAdminOptions['fb_secret']) 
 		. '&code=' . $_REQUEST["code"];
 		// using wp_remote_request should support multiple capabilities
-		$response = wp_remote_request($token_url);
+		$response = wp_remote_request($token_url,array('sslverify'=>false));
 		if( is_wp_error($response)) {
 			echo "WP Error occured in trying to get token:\n";
 			echo "Token url was " . $token_url . "\n";
