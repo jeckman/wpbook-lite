@@ -1,7 +1,7 @@
 === WPBook Lite ===
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
-Stable tag: 1.3
+Stable tag: 1.3.1
 Tested up to: 3.3.1
 Requires at least: 2.9
 
@@ -50,8 +50,11 @@ This plugin requires PHP 5.
 
 == Changelog ==
 
+= 1.3.1 = 
 * Added hook to remove all post_meta wpbook lite creates on uninstall
-
+* Added sslverify false for getting token from Facebook to solve certificate
+  errors
+  
 = 1.3 = 
 * New feature: added "message" to post-meta box; used it text is entered into
   it instead of the excerpt for the post. 
