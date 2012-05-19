@@ -2,11 +2,11 @@
 /*
 Plugin Name: WPBook Lite
 Plugin URI: http://wpbook.net/
-Date: 2012, April 10th
+Date: 2012, May 19th
 Description: Plugin to cross post Wordpress Blog posts to Facebook. 
 Author: John Eckman
 Author URI: http://johneckman.com
-Version: 1.3.1
+Version: 1.4
 Stable tag: 1.3.1
 
 */
@@ -253,7 +253,7 @@ function wpbook_lite_subpanel() {
 		<p>You have to grant permissions now, so that the Facebook application you've just created can access
 		your personal profile and post on your behalf.</p>
 		
-		<P><a href="https://www.facebook.com/dialog/oauth?client_id=<?php echo htmlentities($wpbookLiteAdminOptions['fb_api_key']); ?>&redirect_uri=<?php echo home_url(); ?>/%3Fwpbook=oauth&scope=read_stream,offline_access,publish_stream,manage_pages,user_groups">Generate Access Token</a></p>
+		<P><a href="https://www.facebook.com/dialog/oauth?client_id=<?php echo htmlentities($wpbookLiteAdminOptions['fb_api_key']); ?>&redirect_uri=<?php echo home_url(); ?>/%3Fwpbook=oauth&scope=read_stream,publish_stream,manage_pages,user_groups">Generate Access Token</a></p>
 	 
 		<p>That will trigger a multiple step process which will generate an access token and store it - you should see your blog home 
 		page load with a message at the top declaring success or offering an error. Revisit this page and you should see the access code stored below: </p>
@@ -640,7 +640,7 @@ function wpbook_parse_request($wp) {
 			die(); 
 		}
 		if(strpos($response['body'],'access_token=') !== false) {
-			$my_at = substr($response['body'],strpos($response['body'],'access_token=')+13);
+			$my_at = substr($response['body'],strpos($response['body'],'access_token=')+13,strpos($response['body'],'&expires')-13);			
 			update_option('wpbook_lite_user_access_token',$my_at);
 			echo "Succeeded in saving Access Token\n";
 			echo '<a href="'. get_bloginfo('home') .'">Return to your blog</a>';
@@ -665,6 +665,19 @@ function wpbook_query_vars($vars) {
     return $vars;
 }
 
+// display admin notice if token is invalid
+function wpbook_token_notice() {
+?>
+  <div class='error fade'>
+    <p>Your Facebook Access Token for WPBook Lite has expired. Please
+	   <a href="/wp-admin/options-general.php?wpbook-lite.php">visit the settings page for WPBook Lite</a> and grant a new
+	   access token. Until you do so, cross-posting to Facebook and import of 
+	   comments will fail.</p>
+  </div>
+<?php
+}
+
+
 // thanks http://wpengineer.com/35/wordpress-plugin-deinstall-data-automatically/ 
  /**
  * Check for uninstall hook
@@ -686,6 +699,12 @@ function wpbooklite_deinstall() {
 	}
 	
 	
+}
+
+//admin notice for expired token
+$my_access_token = get_option('wpbook_lite_user_access_token','');
+if ($my_access_token == 'invalid') {
+	add_action('admin_notices', 'wpbook_token_notice');
 }
 
 //add gravatar/facebook avatar support outside facebook

@@ -1,7 +1,7 @@
 === WPBook Lite ===
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
-Stable tag: 1.3.1
+Stable tag: 1.4
 Tested up to: 3.3.1
 Requires at least: 2.9
 
@@ -49,6 +49,12 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+
+= 1.4 = 
+* Updated logic to accomodate Facebook's deprecation of "offline_access" tokens. 
+  This will mean tokens (for newly created apps) will expire every 60 days and 
+  require re-authentication. WPBook Lite checks for token validity every time it
+  publishes and every time the cron task for comment import runs (once an hour). 
 
 = 1.3.1 = 
 * Added hook to remove all post_meta wpbook lite creates on uninstall
