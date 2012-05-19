@@ -670,7 +670,7 @@ function wpbook_token_notice() {
 ?>
   <div class='error fade'>
     <p>Your Facebook Access Token for WPBook Lite has expired. Please
-	   <a href="/wp-admin/options-general.php?wpbook-lite.php">visit the settings page for WPBook Lite</a> and grant a new
+	   <a href="/wp-admin/options-general.php?page=wpbook-lite.php">visit the settings page for WPBook Lite</a> and grant a new
 	   access token. Until you do so, cross-posting to Facebook and import of 
 	   comments will fail.</p>
   </div>
