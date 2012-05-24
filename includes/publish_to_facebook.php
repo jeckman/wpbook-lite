@@ -60,7 +60,7 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 	}
 	
 	try {
-		$facebook->setAccessToken($access_token);
+		$facebook->setAccessToken($wpbook_user_access_token);
 	} catch (FacebookApiException $e) {
 		if(WPBOOKDEBUG) {
 			$wpbook_message = 'Caught exception setting access token: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
