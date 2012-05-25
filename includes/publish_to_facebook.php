@@ -427,14 +427,14 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 				$debug_string=date("Y-m-d H:i:s",time())." : Publishing to page " . $target_page  ."\n";
 				fwrite($fp, $debug_string);
 			}
-            try {
-				$facebook->api('/me/accounts/','GET');
-			} catch (FacebookApiException $e) {
-				if($wpbook_show_errors) {
-					$wpbook_message = 'Caught exception for page access token: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
-					wp_die($wpbook_message,'WPBook Error');
-				} // end if for show errors
-			} // end try-catch
+            //try {
+			//	$facebook->api('/me/accounts/','GET');
+			//} catch (FacebookApiException $e) {
+			//	if($wpbook_show_errors) {
+			//		$wpbook_message = 'Caught exception for page access token: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
+			//		wp_die($wpbook_message,'WPBook Error');
+			//	} // end if for show errors
+			//} // end try-catch
 					
 			// post as an excerpt
 			if(!empty($my_image)) {

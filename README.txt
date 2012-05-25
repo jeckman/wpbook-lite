@@ -1,7 +1,7 @@
 === WPBook Lite ===
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 Tested up to: 3.3.1
 Requires at least: 2.9
 
@@ -49,6 +49,10 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+= 1.4.2 = 
+* Eliminated check on page access_token as that really just comes from the user
+  access token - hope this will solve issues with page publishing
+  
 = 1.4.1 =
 * Simple typo bug in publishing to Facebook - EVERYONE MUST UPGRADE as 1.4
   will not work
