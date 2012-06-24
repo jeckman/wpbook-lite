@@ -1,12 +1,15 @@
 === WPBook Lite ===
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
-Stable tag: 1.4.2
-Tested up to: 3.3.1
 Requires at least: 2.9
+Stable tag: 1.4.3
+Tested up to: 3.4
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Based on wpbook ( http://wordpress.org/extend/plugins/wbook/ ), 
-WPBook Lite enables cross-posting of blog items to facebook, 
+
+Based on WPBook ( http://wordpress.org/extend/plugins/wbook/ ), 
+WPBook Lite enables cross-posting of blog items to Facebook, 
 and import of comments from Facebook back to WordPress.  
 
 Unlike WPBook, WPBook Lite does NOT provide a view of your blog as a Facebook application,
@@ -49,6 +52,16 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+
+= 1.4.3 = 
+* Fixed typo in wpbook_cron.php thanks to jeff@pyebrook.com 
+  (http://wordpress.org/support/topic/plugin-wpbook-lite-minor-typo-in-wpbook-cron)
+* Updated add_options_page() function call in wpbook-lite.php from same forum
+  thread. 
+* Fixed extraneous close div tags in admin interface
+* Removed unused Jquery functions from admin interface javascript
+* Deleted unused PNG files from admin interface
+  
 = 1.4.2 = 
 * Eliminated check on page access_token as that really just comes from the user
   access token - hope this will solve issues with page publishing
