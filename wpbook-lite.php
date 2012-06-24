@@ -2,12 +2,12 @@
 /*
 Plugin Name: WPBook Lite
 Plugin URI: http://wpbook.net/
-Date: 2012, May 24th
+Date: 2012, June 24th
 Description: Plugin to cross post Wordpress Blog posts to Facebook. 
 Author: John Eckman
 Author URI: http://johneckman.com
-Version: 1.4.2
-Stable tag: 1.3.1
+Version: 1.4.3
+Stable tag: 1.4.3
 
 */
   
@@ -126,7 +126,7 @@ function setAdminOptions($wpbook_installation,
 add_action('admin_menu', 'wpbook_lite_options_page');						   
 function wpbook_lite_options_page() {
 	if (function_exists('add_options_page')) {
-		$wpbook_lite_plugin_page = add_options_page('WPBook Lite', 'WPBook Lite', 8, basename(__FILE__), 'wpbook_lite_subpanel');
+		$wpbook_lite_plugin_page = add_options_page('WPBook Lite', 'WPBook Lite','manage_options', basename(__FILE__), 'wpbook_lite_subpanel');
 	   add_action( 'load-'. $wpbook_lite_plugin_page, 'wpbook_lite_admin_head' );
 	}
 } 
@@ -447,8 +447,6 @@ echo '<p class="wpbook_hidden wpbook_option_set_2 sub_options">Page ID: <input t
 	  echo '</div>'; 
       } //end hide all settings if required fields aren't filled in
       ?>
-      </div> <!-- END Stream Options --> 
-	</div> <!-- END App View Options --> 
 	
 <?php 
 echo '<p><input type="submit" value="Save" class="button-primary"';
