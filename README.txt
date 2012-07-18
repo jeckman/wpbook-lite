@@ -53,6 +53,10 @@ This plugin requires PHP 5.
 
 == Changelog ==
 
+* Fixed bad define() statement for setting WPBOOKDEBUG to false if the file
+  handler fp comes back not writeable. This resulted in warnings being thrown
+  for users whose permissions did not allow writing to the file system. 
+
 = 1.4.3 = 
 * Fixed typo in wpbook_cron.php thanks to jeff@pyebrook.com 
   (http://wordpress.org/support/topic/plugin-wpbook-lite-minor-typo-in-wpbook-cron)
