@@ -54,7 +54,7 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 				fwrite($fp, $debug_string);
 			} else {
 				fclose($fp);
-				define (WPBOOKDEBUG,false); // if it isn't writeable don't keep trying 
+				define ('WPBOOKDEBUG',false); // if it isn't writeable don't keep trying 
 			}
 		}
 	}
