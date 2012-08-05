@@ -6,8 +6,8 @@ Date: 2012, June 24th
 Description: Plugin to cross post Wordpress Blog posts to Facebook. 
 Author: John Eckman
 Author URI: http://johneckman.com
-Version: 1.4.3
-Stable tag: 1.4.3
+Version: 1.5
+Stable tag: 1.5
 
 */
   
