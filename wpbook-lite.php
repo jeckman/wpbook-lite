@@ -638,7 +638,11 @@ function wpbook_parse_request($wp) {
 			die(); 
 		}
 		if(strpos($response['body'],'access_token=') !== false) {
-			$my_at = substr($response['body'],strpos($response['body'],'access_token=')+13,strpos($response['body'],'&expires')-13);			
+			if(strpos($response['body'],'&expires') !== false) {
+				$my_at = substr($response['body'],strpos($response['body'],'access_token=')+13,strpos($response['body'],'&expires')-13);
+			} else {
+				$my_at = substr($response['body'],strpos($response['body'],'access_token=')+13);
+			}
 			update_option('wpbook_lite_user_access_token',$my_at);
 			echo "Succeeded in saving Access Token\n";
 			echo '<a href="'. get_bloginfo('home') .'">Return to your blog</a>';
