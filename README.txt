@@ -53,6 +53,9 @@ This plugin requires PHP 5.
 
 == Changelog ==
 
+* Fixed undefined $response variable in wpbook_cron - threw warnings when 
+  run, may have interfered with comment import. 
+
 = 1.5 = 
 * Fixed error introduced somewhere around 1.4.1 involving storing access tokens
   for long-lived tokens. Wasn't properly storing full length of token which 
