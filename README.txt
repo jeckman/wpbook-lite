@@ -2,7 +2,7 @@
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
 Requires at least: 2.9
-Stable tag: 1.5
+Stable tag: 1.5.1
 Tested up to: 3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,10 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+
+= 1.5.1 = 
+* Fixed undefined $response variable in wpbook_cron - threw warnings when 
+  run, may have interfered with comment import. 
 
 = 1.5 = 
 * Fixed error introduced somewhere around 1.4.1 involving storing access tokens
