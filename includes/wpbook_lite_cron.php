@@ -107,10 +107,10 @@ function wpbook_lite_import_comments() {
   }  // end try-catch
 
   try {
-	$facebook->api('/me','GET');
+	$response = $facebook->api('/me','GET');
   } catch (FacebookApiException $e) {
 	if(WPBOOKDEBUG) {
-		$wpbook_message = 'Caught exception with access token: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
+		$wpbook_message = 'Caught exception: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
 		$fp = @fopen($debug_file, 'a');
 		$debug_string=date("Y-m-d H:i:s",time())." :". $wpbook_message  ."\n";
       fwrite($fp, $debug_string);
