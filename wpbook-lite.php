@@ -541,7 +541,13 @@ function wpbook_lite_store_post_options($post_id, $post = false) {
 	if ($save) {
 		update_post_meta($post_id, 'wpbook_lite_fb_publish', $meta); 
 	}
-	update_post_meta($post_id, 'wpbook_lite_message', $wpbook_lite_message); 
+	// checking to see if the meta message variable exists before setting it
+	if(isset($wpbook_lite_message) && ($wpbook_lite_message != '')) {
+		update_post_meta($post_id, 'wpbook_lite_message', $wpbook_lite_message);
+	}
+	if ((isset($wpbook_lite_message)) && ($wpbook_lite_message == '')) {
+		delete_post_meta($post_id, 'wpbook_lite_message');  
+	}
 }
 add_action('draft_post', 'wpbook_lite_store_post_options', 1, 2);
 add_action('publish_post', 'wpbook_lite_store_post_options', 1, 2);
