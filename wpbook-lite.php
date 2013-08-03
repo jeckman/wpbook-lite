@@ -652,6 +652,39 @@ function wpbook_parse_request($wp) {
 			}
 			update_option('wpbook_lite_user_access_token',$my_at);
 			echo "Succeeded in saving Access Token\n";
+			echo '<a href="'. get_bloginfo('home') .'">Return to your blog</a>\n';
+		} else {
+			echo "Failed in creating access token\n"; 
+			echo "Response was: \n";
+			if (is_array($response)) {
+				echo print_r($response,true);
+			} else {
+				echo $response; 
+			}
+			echo '<a href="'. get_bloginfo('home') .'">Return to your blog</a>';
+		}
+		
+		/* now let's exchange the short term one for a 2 month one */ 
+		$token_url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id='
+		. htmlentities($wpbookLiteAdminOptions['fb_api_key']) . '&redirect_uri='
+		. home_url() .'/%3Fwpbook=oauth&client_secret=' . htmlentities($wpbookLiteAdminOptions['fb_secret']) 
+		. '&fb_exchange_token=' . $my_at;
+		// using wp_remote_request should support multiple capabilities
+		$response = wp_remote_request($token_url,array('sslverify'=>false));
+		if( is_wp_error($response)) {
+			echo "WP Error occured in trying to exchange token:\n";
+			echo "Token url was " . $token_url . "\n";
+			echo "WP Error is " . $response->get_error_message(); 
+			die(); 
+		}
+		if(strpos($response['body'],'access_token=') !== false) {
+			if(strpos($response['body'],'&expires') !== false) {
+				$my_at = substr($response['body'],strpos($response['body'],'access_token=')+13,strpos($response['body'],'&expires')-13);
+			} else {
+				$my_at = substr($response['body'],strpos($response['body'],'access_token=')+13);
+			}
+			update_option('wpbook_lite_user_access_token',$my_at);
+			echo "Succeeded in saving new extended  Access Token\n";
 			echo '<a href="'. get_bloginfo('home') .'">Return to your blog</a>';
 		} else {
 			echo "Failed in creating access token\n"; 
@@ -663,6 +696,12 @@ function wpbook_parse_request($wp) {
 			}
 			echo '<a href="'. get_bloginfo('home') .'">Return to your blog</a>';
 		}
+		
+		
+		
+		
+		
+		
 		die(); 
 	 }
     }
