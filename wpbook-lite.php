@@ -6,8 +6,8 @@ Date: 2012, September 29th
 Description: Plugin to cross post Wordpress Blog posts to Facebook. 
 Author: John Eckman
 Author URI: http://johneckman.com
-Version: 1.5.3
-Stable tag: 1.5.3
+Version: 1.5.4
+Stable tag: 1.5.4
 
 */
   
@@ -718,8 +718,8 @@ function wpbook_token_notice() {
 ?>
   <div class='error fade'>
     <p>Your Facebook Access Token for WPBook Lite has expired. Please
-	   <a href="/wp-admin/options-general.php?page=wpbook-lite.php">visit the settings page for WPBook Lite</a> and grant a new
-	   access token. Until you do so, cross-posting to Facebook and import of 
+	   <a href="<?php echo admin_url('options-general.php?page=wpbook-lite.php'); ?>">visit the settings page for WPBook Lite</a> and
+	   grant a new access token. Until you do so, cross-posting to Facebook and import of 
 	   comments will fail.</p>
   </div>
 <?php
