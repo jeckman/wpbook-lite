@@ -75,6 +75,8 @@ function wpbook_lite_getAdminOptions() {
 		} else {
 		    $wpbookLiteAdminOptions['proto'] = "http";
 		}  
+	} else {
+		$wpbookLiteAdminOptions = ''; 
 	}
 	return $wpbookLiteAdminOptions;
 }
