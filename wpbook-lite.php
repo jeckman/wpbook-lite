@@ -148,29 +148,85 @@ function wpbook_lite_subpanel() {
       $fb_api_key = preg_replace("#[^0-9]#", "",$_POST['fb_api_key']);
       $fb_secret = $_POST['fb_secret'];
       $fb_admin_target = preg_replace("#[^0-9]#", "",$_POST['fb_admin_target']);
-      $fb_page_target = preg_replace("#[^0-9]#", "",$_POST['fb_page_target']);
-      $show_advanced_options = $_POST['show_advanced_options'];
-      $stream_publish = $_POST['stream_publish'];  
-      $stream_publish_pages = $_POST['stream_publish_pages'];
-      $show_errors = $_POST['show_errors'];  
-      $import_comments = $_POST['import_comments'];
-      $approve_imported_comments = $_POST['approve_imported_comments'];
-      $num_days_import = preg_replace("#[^0-9]#", "",$_POST['num_days_import']);  
-      $imported_comments_email = $_POST['imported_comments_email'];  
-      $infinite_session_key = $_POST['infinite_session_key']; 
-      $wpbook_enable_debug = $_POST['wpbook_enable_debug'];
+      if(isset($_POST['fb_page_target'])) {
+      	$fb_page_target = preg_replace("#[^0-9]#", "",$_POST['fb_page_target']);
+      } else {
+      	$fb_page_target = '';
+      }
+      if(isset($_POST['show_advanced_options'])) {
+      	$show_advanced_options = $_POST['show_advanced_options'];
+      } else {
+      	$show_advanced_options = ''; 
+      }
+      if(isset($_POST['stream_publish'])) {
+      	$stream_publish = $_POST['stream_publish'];  
+      } else {
+      	$stream_publish = ''; 
+      }
+      if(isset($_POST['stream_publish_pages'])) {
+      	$stream_publish_pages = $_POST['stream_publish_pages'];
+      } else {
+      	$stream_publish_pages = ''; 
+      }
+      if(isset($_POST['show_errors'])) {
+      	$show_errors = $_POST['show_errors']; 
+      } else {
+      	$show_errors = ''; 
+      }
+      if(isset($_POST['import_comments'])) {
+      	$import_comments = $_POST['import_comments'];
+      } else {
+      	$import_comments = ''; 
+      }
+      if(isset($_POST['approve_imported_comments'])) {
+      	$approve_imported_comments = $_POST['approve_imported_comments'];
+      } else {
+      	$approve_imported_comments = ''; 
+      }
+      if(isset($_POST['approve_imported_comments'])) {
+      	$num_days_import = preg_replace("#[^0-9]#", "",$_POST['num_days_import']);  
+      } else {
+      	$num_days_import = ''; 
+      }
+      if(isset($_POST['imported_comments_email'])) {
+      	$imported_comments_email = $_POST['imported_comments_email']; 
+      } else {
+      	$imported_comments_email = ''; 
+      } 
+      if(isset($_POST['infinite_session_key'])) {
+      	$infinite_session_key = $_POST['infinite_session_key']; 
+      } else {
+      	$infinite_session_key = ''; 
+      } 
+      if(isset($_POST['wpbook_enable_debug'])) {
+      	$wpbook_enable_debug = $_POST['wpbook_enable_debug'];
+      } else {
+      	$wpbook_enable_debug = ''; 
+      }
 	  $wpbook_as_note = 'post'; // default to post type of POST unless otherwise set
-			if($_POST['post_as']=='note')
+			if(isset($_POST['post_as']) && $_POST['post_as']=='note')
 				$wpbook_as_note = 'note';
-			if($_POST['post_as']=='link')
+			if(isset($_POST['post_as']) && $_POST['post_as']=='link')
 				$wpbook_as_note = 'link';      
 	  $wpbook_as_link = 'post';
-		if($_POST['page_post_as'] == 'link')
+		if(isset($_POST['[page_post_as']) && $_POST['page_post_as'] == 'link')
 			$wpbook_as_link = 'link';
 				
-	  $wpbook_target_group = $_POST['wpbook_target_group'];
-      $wpbook_disable_sslverify = $_POST['wpbook_disable_sslverify'];
-      $wpbook_use_global_gravatar = $_POST['wpbook_use_global_gravatar'];
+	  if(isset($_POST['wpbook_target_group'])) {
+	  	$wpbook_target_group = $_POST['wpbook_target_group'];
+	  } else {
+	  	$wpbook_target_group = ''; 
+	  }
+      if(isset($_POST['wpbook_disable_sslverify'])) {
+      	$wpbook_disable_sslverify = $_POST['wpbook_disable_sslverify'];
+      } else {
+      	$wpbook_disable_sslverify = ''; 
+      }
+      if(isset($_POST['wpbook_use_global_gravatar'])) {
+      	$wpbook_use_global_gravatar = $_POST['wpbook_use_global_gravatar'];
+      } else {
+      	$wpbook_use_global_gravatar = '';
+      }
       setAdminOptions(1, $fb_api_key, $fb_secret,$fb_admin_target,$fb_page_target,
                     $show_advanced_options,$stream_publish,
                     $stream_publish_pages,$show_errors,
