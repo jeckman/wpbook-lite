@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 Plugin Name: WPBook Lite
 Plugin URI: http://wpbook.net/
@@ -561,7 +561,8 @@ function wpbook_lite_get_global_facebook_avatar($avatar, $comment, $size="50") {
     foreach ($wpbookLiteOptions as $key => $option)
       $wpbookLiteAdminOptions[$key] = $option;
   }
-  if(($wpbookLiteAdminOptions['wpbook_use_global_gravatar'] =="true")
+  if(isset($wpbookLiteAdminOptions['wpbook_use_global_gravatar'])
+  	&& ($wpbookLiteAdminOptions['wpbook_use_global_gravatar'] =="true")
 	&& (is_object($comment))
 	&& (isset($comment->comment_author_email))
 	&& ($comment->comment_author_email == $wpbookLiteAdminOptions['imported_comments_email'])) {
