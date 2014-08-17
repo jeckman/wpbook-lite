@@ -70,7 +70,7 @@ function wpbook_lite_getAdminOptions() {
 	if (!empty($wpbookLiteOptions)) {
 		foreach ($wpbookLiteOptions as $key => $option)
 			$wpbookLiteAdminOptions[$key] = $option;
-		if ($_SERVER['HTTPS'] == "on") { 
+		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") { 
 		    $wpbookLiteAdminOptions['proto'] = "https"; 
 		} else {
 		    $wpbookLiteAdminOptions['proto'] = "http";
