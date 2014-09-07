@@ -2,7 +2,7 @@
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
 Requires at least: 2.9
-Stable tag: 1.5.5
+Stable tag: 1.6
 Tested up to: 4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -53,7 +53,10 @@ This plugin requires PHP 5.
 
 == Changelog ==
 
-* Updated Facebook PHP SDK to 3.2.3.
+= 1.6 = 
+* Updated Facebook PHP SDK to 3.2.3. Would like to get to 4.0 at some point
+  but that requires PHP 5.4 where WordPress only requires 5.2.4 - don't want 
+  to get too far ahead. 
 * Updated publish_to_facebook to use appropriate appsecret_proof
 * Updated the base_facebook class to use v2.1 of the graph API. (New apps
   created on Facebook can no longer use v1 of the API, which is what gets
@@ -63,6 +66,8 @@ This plugin requires PHP 5.
   Facebook apps using v2 or later of the API
 * Ask for publish_actions not publish_stream - deprecated API functions. This will
   probably mean people will need to regenerate their access tokens, but it works. 
+* Use https for Facebook avatars outside facebook setting - should make that
+  work again even for those for whom it wasn't
 
 = 1.5.4 =
 * When granting a new access token, get the short-term one and then immediately 
