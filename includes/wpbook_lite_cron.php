@@ -107,7 +107,7 @@ function wpbook_lite_import_comments() {
   }  // end try-catch
 
   try {
-	$response = $facebook->api('/v2.1/me','GET');
+	$response = $facebook->api('/me','GET');
   } catch (FacebookApiException $e) {
 	if(WPBOOKDEBUG) {
 		$wpbook_message = 'Caught exception: ' .  $e->getMessage() .'Error code: '. $e->getCode();  
@@ -210,7 +210,7 @@ function wpbook_lite_import_comments() {
              * Need to replace these with graph API calls 
              */
             try {
-            	$fbcommentslist = $facebook->api('/v2.1/'.$mp->meta_value.'/comments?filter=stream&summary=1','GET'); 
+            	$fbcommentslist = $facebook->api('/'.$mp->meta_value.'/comments?filter=stream&summary=1','GET'); 
             } catch (FacebookApiException $e) {
             	if(WPBOOKDEBUG) {
               		$fp = @fopen($debug_file, 'a');
