@@ -107,7 +107,7 @@ function wpbook_lite_import_comments() {
   }  // end try-catch
 
   try {
-	$response = $facebook->api('/me','GET');
+	$response = $facebook->api('/v2.1/me','GET');
   } catch (FacebookApiException $e) {
 	if(WPBOOKDEBUG) {
 		$wpbook_message = 'Caught exception: ' .  $e->getMessage() .'Error code: '. $e->getCode();  

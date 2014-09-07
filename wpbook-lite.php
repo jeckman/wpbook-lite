@@ -354,7 +354,7 @@ function wpbook_lite_subpanel() {
 			echo '--> <p>Could not get userid from Facebook. ' . $e->getMessage() .'Error code: '. $e->getCode()    .'</p><!-- ';
 		}
 		try {
-			$fb_response = $facebook->api('/'. $uid .'/accounts'); 
+			$fb_response = $facebook->api('/v2.1/'. $uid .'/accounts'); 
 		} catch (FacebookAPIException $e) {
 			echo '--> <p>Could not get accounts list from Facebook. ' . $e->getMessage() .'Error code: '. $e->getCode()    .'</p><!-- ';
 			$fb_response = false; 
