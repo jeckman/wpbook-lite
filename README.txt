@@ -55,6 +55,12 @@ This plugin requires PHP 5.
 
 * Updated Facebook PHP SDK to 3.2.3.
 * Updated publish_to_facebook to use appropriate appsecret_proof
+* Updated the base_facebook class to use v2.1 of the graph API. (New apps
+  created on Facebook can no longer use v1 of the API, which is what gets
+  used if you don't pass a version - so I have to pass a version, so lets
+  use 2.1. 
+* Rewrote comment import to not use FQL as that is not supported in new
+  Facebook apps using v2 or later of the API
 
 
 = 1.5.4 =
