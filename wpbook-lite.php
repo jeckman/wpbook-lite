@@ -628,7 +628,7 @@ function wpbook_lite_get_global_facebook_avatar($avatar, $comment, $size="50") {
     $email = get_comment_author_email();    
 	$size="50";
     $parse_author_url = (parse_url($author_url));
-    if(preg_match("@^(?:http://)?(?:www\.)?facebook@i",trim($author_url))){
+    if(preg_match("@^(?:https://)?(?:www\.)?facebook@i",trim($author_url))){
       $parse_author_url_q = $parse_author_url['query'];
       if(preg_match('/id[=]([0-9]*)/', $parse_author_url_q, $match)){
         $fb_id = "/".$match[1];
@@ -647,7 +647,7 @@ function wpbook_lite_get_global_facebook_avatar($avatar, $comment, $size="50") {
           $fb_id = $parse_author_url['path'];
         }
       }
-      $grav_url= "http://graph.facebook.com".$fb_id."/picture?type=square";
+      $grav_url= "https://graph.facebook.com".$fb_id."/picture?type=square";
     }
     else {
       $grav_url = "http://www.gravatar.com/avatar/" . md5(strtolower($email))."?s=".$size;

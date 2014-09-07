@@ -61,7 +61,8 @@ This plugin requires PHP 5.
   use 2.1. 
 * Rewrote comment import to not use FQL as that is not supported in new
   Facebook apps using v2 or later of the API
-
+* Ask for publish_actions not publish_stream - deprecated API functions. This will
+  probably mean people will need to regenerate their access tokens, but it works. 
 
 = 1.5.4 =
 * When granting a new access token, get the short-term one and then immediately 
