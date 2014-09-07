@@ -53,6 +53,10 @@ This plugin requires PHP 5.
 
 == Changelog ==
 
+* Updated Facebook PHP SDK to 3.2.3.
+* Updated publish_to_facebook to use appropriate appsecret_proof
+
+
 = 1.5.4 =
 * When granting a new access token, get the short-term one and then immediately 
   exchange for a 2 month long-lived one. 
