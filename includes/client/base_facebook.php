@@ -162,12 +162,12 @@ abstract class BaseFacebook
    * @var array
    */
   public static $DOMAIN_MAP = array(
-    'api'         => 'https://api.facebook.com/',
-    'api_video'   => 'https://api-video.facebook.com/',
-    'api_read'    => 'https://api-read.facebook.com/',
-    'graph'       => 'https://graph.facebook.com/',
-    'graph_video' => 'https://graph-video.facebook.com/',
-    'www'         => 'https://www.facebook.com/',
+    'api'         => 'https://api.facebook.com/v2.1/',
+    'api_video'   => 'https://api-video.facebook.com/v2.1/',
+    'api_read'    => 'https://api-read.facebook.com/v2.1/',
+    'graph'       => 'https://graph.facebook.com/v2.1/',
+    'graph_video' => 'https://graph-video.facebook.com/v2.1/',
+    'www'         => 'https://www.facebook.com/v2.1/',
   );
 
   /**
