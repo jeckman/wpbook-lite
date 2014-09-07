@@ -319,26 +319,13 @@ function wpbook_lite_import_comments() {
                 $debug_string=date("Y-m-d H:i:s",time())." : Posted comment with timestamp $time, id $my_id, approval $wpbook_comment_approval \n";
                 fwrite($fp, $debug_string);
               }
-              if($mp->meta_key == '_wpbook_user_stream_id') {
-                $sql="update $wpdb->postmeta set meta_value=$comment_time where post_id=$mp->post_id and meta_key='_wpbook_user_stream_time'";
-              } 
-              if($mp->meta_key == '_wpbook_group_stream_id') {
-                $sql="update $wpdb->postmeta set meta_value=$comment_time where post_id=$mp->post_id and meta_key='_wpbook_group_stream_time'";
-              } 
-              if($mp->meta_key == '_wpbook_page_stream_id') {
-                $sql="update $wpdb->postmeta set meta_value=$comment_time where post_id=$mp->post_id and meta_key='_wpbook_page_stream_time'";
-              }
-              if(WPBOOKDEBUG) {
-                $fp = @fopen($debug_file, 'a');
-                $debug_string=date("Y-m-d H:i:s",time())." : About to update timestamp, SQL is $sql \n";
-                fwrite($fp, $debug_string);
-              }
-              $update_result = $wpdb->query($sql);
-              if(WPBOOKDEBUG) {
-                $fp = @fopen($debug_file, 'a');
-                $debug_string=date("Y-m-d H:i:s",time())." : Updated timestamp, rows affected $wpdb->num_rows \n";
-                fwrite($fp, $debug_string);
-              } 
+              if($mp->meta_key == '_wpbook_user_stream_id') 
+              	$wpbook_meta_key = '_wpbook_user_stream_time'; 
+              if($mp->meta_key == '_wpbook_group_stream_id')
+                $wpbook_meta_key = '_wpbook_group_stream_time';
+              if($mp->meta_key == '_wpbook_page_stream_id')
+                $wpbook_meta_key = '_wpbook_page_stream_time'; 
+              update_post_meta($mp->post_id,$wpbook_meta_key,$comment_time); 
             } // end of new comment process 
           } else {
             if(WPBOOKDEBUG) {
