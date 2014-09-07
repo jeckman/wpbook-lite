@@ -76,7 +76,7 @@ function wpbook_lite_safe_publish_to_facebook($post_ID) {
 
 	// this is just to validate the access token - with php SDK 3.2.3 this fails on appsecret_proof being invalid	
 	try {
-		$facebook->api('/'.$target_admin,'GET');
+		$facebook->api('/me','GET');
 	} catch (FacebookApiException $e) {
 		if(WPBOOKDEBUG) {
 			$wpbook_message = 'Caught exception with access token: ' .  $e->getMessage() .' Error code: '. $e->getCode();  
