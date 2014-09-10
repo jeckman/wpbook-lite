@@ -2,7 +2,7 @@
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
 Requires at least: 2.9
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 Tested up to: 4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,10 @@ This plugin requires PHP 5.
 
 == Changelog ==
 
+= 1.6.2 =
+* Somehow encoding on the main wpbook-lite.php file was UTF-8 with a BOM - this
+  triggers extra characters of output on activation. 
+  
 = 1.6.1 = 
 * Changes to the API changed format for timestamps, which through for a loop the 
   logic for checking when comments are new. 
