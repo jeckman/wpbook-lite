@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /*
 Plugin Name: WPBook Lite
 Plugin URI: http://wpbook.net/
