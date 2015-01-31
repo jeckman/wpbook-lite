@@ -2,8 +2,8 @@
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
 Requires at least: 2.9
-Stable tag: 1.6.2
-Tested up to: 4.0
+Stable tag: 1.6.3
+Tested up to: 4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,9 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+
+= 1.6.3 = 
+* Bug in setting post-as-link for the publish to page/group settings. 
 
 = 1.6.2 =
 * Somehow encoding on the main wpbook-lite.php file was UTF-8 with a BOM - this

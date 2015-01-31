@@ -5,8 +5,8 @@ Plugin URI: http://wpbook.net/
 Description: Plugin to cross post Wordpress Blog posts to Facebook. 
 Author: John Eckman
 Author URI: http://johneckman.com
-Version: 1.6.2
-Stable tag: 1.6.2
+Version: 1.6.3
+Stable tag: 1.6.3
 
 */
   
@@ -208,7 +208,7 @@ function wpbook_lite_subpanel() {
 			if(isset($_POST['post_as']) && $_POST['post_as']=='link')
 				$wpbook_as_note = 'link';      
 	  $wpbook_as_link = 'post';
-		if(isset($_POST['[page_post_as']) && $_POST['page_post_as'] == 'link')
+		if(isset($_POST['page_post_as']) && $_POST['page_post_as'] == 'link')
 			$wpbook_as_link = 'link';
 				
 	  if(isset($_POST['wpbook_target_group'])) {
