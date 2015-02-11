@@ -143,7 +143,8 @@ function wpbook_lite_subpanel() {
     global $current_user;
     get_currentuserinfo(); 
     $wpbookLiteAdminOptions = wpbook_lite_getAdminOptions();
-    if (isset($_POST['fb_api_key']) && isset($_POST['fb_secret']) && isset($_POST['fb_admin_target']) ) { 
+    if ( ! empty( $_POST ) && check_admin_referer( 'update_settings', 'wpbook_lite_admin_nonce') 
+      	&& isset($_POST['fb_api_key']) && isset($_POST['fb_secret']) && isset($_POST['fb_admin_target']) ) { 
       $fb_api_key = preg_replace("#[^0-9]#", "",$_POST['fb_api_key']);
       $fb_secret = $_POST['fb_secret'];
       $fb_admin_target = preg_replace("#[^0-9]#", "",$_POST['fb_admin_target']);
@@ -237,8 +238,11 @@ function wpbook_lite_subpanel() {
       $flash = "Your settings have been saved. ";
     } elseif (($wpbookLiteAdminOptions['fb_api_key'] != "") && ($wpbookLiteAdminOptions['fb_secret'] != "") && ($wpbookLiteAdminOptions['fb_admin_target'] != "")){
       $flash = "";
+    } elseif (! empty( $_POST ) && ! check_admin_referer( 'update_settings', 'wpbook_lite_admin_nonce')) {
+      $flash = "Admin nonce failed";
     } else {
-      $flash = "Please complete all necessary fields";}
+      $flash = "Please complete all necessary fields";
+    }
     } else {
       $flash = "You don't have enough access rights.";
     }   
@@ -506,7 +510,8 @@ echo '<p class="wpbook_hidden wpbook_option_set_2 sub_options">Page ID: <input t
       ?>
 	
 <?php 
-echo '<p><input type="submit" value="Save" class="button-primary"';
+	  wp_nonce_field( 'update_settings', 'wpbook_lite_admin_nonce' );
+	  echo '<p><input type="submit" value="Save" class="button-primary"';
       echo ' name="wpbook_save_button" /></form></p>';
       echo'<div id="help">';
       echo '<h2>Need Help?</h2>';
