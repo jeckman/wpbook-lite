@@ -2,8 +2,8 @@
 Contributors: johneckman
 Tags: facebook, platform, application, blog, mirror
 Requires at least: 2.9
-Stable tag: 1.6.4
-Tested up to: 4.1
+Stable tag: 1.6.5
+Tested up to: 4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,9 @@ This plugin requires PHP 5.
 
 
 == Changelog ==
+
+= 1.6.5 = 
+* Better suppression of unset string indices on first install
 
 = 1.6.4 = 
 * Added wp_nonce protection to admin settings form. 

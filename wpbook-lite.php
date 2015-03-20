@@ -5,8 +5,8 @@ Plugin URI: http://wpbook.net/
 Description: Plugin to cross post Wordpress Blog posts to Facebook. 
 Author: John Eckman
 Author URI: http://johneckman.com
-Version: 1.6.4
-Stable tag: 1.6.4
+Version: 1.6.5
+Stable tag: 1.6.5
 
 */
   
