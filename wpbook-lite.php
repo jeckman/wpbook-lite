@@ -236,7 +236,7 @@ function wpbook_lite_subpanel() {
                     $wpbook_use_global_gravatar,$wpbook_as_note,$wpbook_as_link,
                     $wpbook_target_group,$wpbook_disable_sslverify);
       $flash = "Your settings have been saved. ";
-    } elseif (($wpbookLiteAdminOptions['fb_api_key'] != "") && ($wpbookLiteAdminOptions['fb_secret'] != "") && ($wpbookLiteAdminOptions['fb_admin_target'] != "")){
+    } elseif ((isset($wpbookLiteAdminOptions['fb_api_key'])) && ($wpbookLiteAdminOptions['fb_api_key'] != "") && (isset($wpbookLiteAdminOptions['fb_secret'])) && ($wpbookLiteAdminOptions['fb_secret'] != "") && ($wpbookLiteAdminOptions['fb_admin_target'] != "")){
       $flash = "";
     } elseif (! empty( $_POST ) && ! check_admin_referer( 'update_settings', 'wpbook_lite_admin_nonce')) {
       $flash = "Admin nonce failed";
@@ -250,7 +250,7 @@ function wpbook_lite_subpanel() {
     if (wpbook_lite_is_authorized()) {
       $wpbookLiteAdminOptions = wpbook_lite_getAdminOptions();
       //set the "smart" defaults on install this only works once the page has been refeshed
-      if ($wpbookLiteAdminOptions['wpbook_installation'] != 1) {  
+      if ((isset($wpbookLiteAdminOptions['wpbook_installation'])) && ($wpbookLiteAdminOptions['wpbook_installation'] != 1)) {  
         setAdminOptions(1,null,null,null,null,false,
                         false,false,false,false,false,7,"facebook@openparenthesis.org",
 						null,false,false,false,null,null,false);
@@ -285,17 +285,26 @@ function wpbook_lite_subpanel() {
 	<?php 
       echo '<form action="'. $_SERVER["REQUEST_URI"] .'" method="post">'; 
       echo '<p>Facebook App ID: <input type="text" name="fb_api_key" value="';
-	  echo htmlentities($wpbookLiteAdminOptions['fb_api_key']) .'" size="35" />';
-      if(!empty($wpbookLiteAdminOptions['fb_api_key'])) {
+	  if(isset($wpbookLiteAdminOptions['fb_api_key'])) {
+	  	echo htmlentities($wpbookLiteAdminOptions['fb_api_key']);
+	  }
+	  echo '" size="35" />';
+      if((isset($wpbookLiteAdminOptions['fb_api_key'])) && (!empty($wpbookLiteAdminOptions['fb_api_key']))) {
 		echo ' <a href="http://www.facebook.com/apps/application.php?id=' . $wpbookLiteAdminOptions['fb_api_key'] . '" target="_new"> Visit this app profile</a>';
       }
       echo '</p>';
       echo '<p>Facebook App Secret: ';
       echo '<input type="text" name="fb_secret" value="';
-      echo htmlentities($wpbookLiteAdminOptions['fb_secret']) .'" size="35" /></p>';
+      if(isset($wpbookLiteAdminOptions['fb_secret'])) {
+      	echo htmlentities($wpbookLiteAdminOptions['fb_secret']);
+      }
+      echo '" size="35" /></p>';
       echo '<p>YOUR Facebook Profile ID: <input type="text" name="fb_admin_target" value="';
-      echo preg_replace("#[^0-9]#","",htmlentities($wpbookLiteAdminOptions['fb_admin_target'])) .'" size="15" />';
-      if(!empty($wpbookLiteAdminOptions['fb_admin_target'])) {
+      if(isset($wpbookLiteAdminOptions['fb_admin_target'])) {
+      	echo preg_replace("#[^0-9]#","",htmlentities($wpbookLiteAdminOptions['fb_admin_target']));
+      }
+      echo '" size="15" />';
+      if(isset($wpbookLiteAdminOptions['fb_admin_target']) && !empty($wpbookLiteAdminOptions['fb_admin_target'])) {
         echo ' <a href="http://www.facebook.com/profile.php?id=' . $wpbookLiteAdminOptions['fb_admin_target'] . '" target="_new">visit this profile</a>';
       }
       
